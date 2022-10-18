@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@heroicons/react": "^1.0.6",
+    "@heroicons/react": "^2.0.11",
     "@nation3/components": "^0.0.14",
     "ethers": "^5.7.0",
     "next": "12.2.5",
