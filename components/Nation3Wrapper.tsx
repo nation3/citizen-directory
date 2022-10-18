@@ -1,4 +1,4 @@
-import { ViewGridIcon } from "@heroicons/react/outline";
+import { Squares2X2Icon } from "@heroicons/react/24/outline";
 import { Nation3App, DefaultLayout, DefaultSidebar } from "@nation3/components";
 import { useAccount, useConnect, useDisconnect } from "wagmi";
 
@@ -26,7 +26,7 @@ function Nation3Wrapper({
             navLinks={[
               {
                 route: "/",
-                icon: <ViewGridIcon className="w-5 h-5" />,
+                icon: <Squares2X2Icon className="w-5 h-5" />,
                 name: "Start",
                 isActive: true,
               },
