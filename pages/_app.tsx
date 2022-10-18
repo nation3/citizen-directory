@@ -2,6 +2,7 @@ import { getDefaultProvider } from "ethers";
 import type { AppProps } from "next/app";
 import { createClient, WagmiConfig } from "wagmi";
 import Nation3Wrapper from "../components/Nation3Wrapper";
+import '../styles/globals.css'
 
 const client = createClient({
   autoConnect: true,
