@@ -6,6 +6,7 @@ import Link from "next/link"
 import GradientLink from "../components/GradientLink"
 import HomeCard from '../components/HomeCard'
 import flag from '../public/flag.svg'
+import Papa from 'papaparse'
 
 import {
   Chart as ChartJS,
@@ -40,6 +41,7 @@ export function CitizenChart() {
   })
 
   useEffect(() => {
+    console.info('useEffect')
     const chart = chartRef.current
 
     if (!chart) {
@@ -54,27 +56,53 @@ export function CitizenChart() {
     gradientGreen.addColorStop(0, 'rgba(136, 241, 187, 0.6)')
     gradientGreen.addColorStop(1, 'rgba(136, 241, 187, 0.3)')
 
-    const data = {
-      labels: ['2022-10-01', '2022-10-08', '2022-10-15', '2022-10-22'],
-      datasets: [
-        {
-          label: 'Total Citizens',
-          data: [178, 180, 181, 183],
-          borderColor: 'rgba(53, 162, 235, 0.4)',
-          backgroundColor: gradientBlue,
-          fill: true
-        },
-        {
-          label: 'Active Citizens',
-          data: [12, 17, 15, 18],
-          borderColor: 'rgba(136, 241, 187, 1)',
-          backgroundColor: gradientGreen,
-          fill: true
-        }
-      ]
-    }
+    // Fetch data from datasets repo
+    const citizenCountFileUrl: string = 'https://raw.githubusercontent.com/nation3/nationcred-datasets/main/data-sources/citizens/citizen-count-per-week.csv'
+    console.info('Fetching data:', citizenCountFileUrl)
+    Papa.parse(citizenCountFileUrl, {
+      download: true,
+      header: true,
+      skipEmptyLines: true,
+      dynamicTyping: true,
+      complete: (result: any) => {
+        console.info('result:', result)
 
-    setChartData(data)
+        const week_end_dates: string[] = []
+        const total_citizen_count: number[] = []
+        const active_citizen_count: number[] = []
+        result.data.forEach((row: Object, i: number) => {
+          console.info(`row ${i}`, row)
+          week_end_dates[i] = String(row.week_end)
+          total_citizen_count[i] = Number(row.total_citizens)
+          active_citizen_count[i] = Number(row.active_citizens)
+        })
+        console.info('week_end_dates:', week_end_dates)
+        console.info('total_citizen_count:', total_citizen_count)
+        console.info('active_citizen_count:', active_citizen_count)
+    
+        const data = {
+          labels: week_end_dates,
+          datasets: [
+            {
+              label: 'Total Citizens',
+              data: total_citizen_count,
+              borderColor: 'rgba(53, 162, 235, 0.4)',
+              backgroundColor: gradientBlue,
+              fill: true
+            },
+            {
+              label: 'Active Citizens',
+              data: active_citizen_count,
+              borderColor: 'rgba(136, 241, 187, 1)',
+              backgroundColor: gradientGreen,
+              fill: true
+            }
+          ]
+        }
+    
+        setChartData(data)
+      }
+    })
   }, [])
 
   return <Line ref={chartRef} data={chartData} />
