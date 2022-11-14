@@ -138,6 +138,7 @@ export function CitizenList() {
         {
           citizenData.map((citizen) => (
             <HomeCard
+              key={citizen.passport_id}
               passportId={citizen.passport_id}
               ethAddress={citizen.eth_address}
               ensName={citizen.ens_name}
