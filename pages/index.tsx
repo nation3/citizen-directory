@@ -4,7 +4,7 @@ import type { NextPage } from "next"
 import Image from "next/image"
 import Link from "next/link"
 import GradientLink from "../components/GradientLink"
-import HomeCard from '../components/HomeCard'
+import HomeCard from '../components/CitizenCard'
 import flag from '../public/flag.svg'
 import Papa from 'papaparse'
 
@@ -58,7 +58,7 @@ export function CitizenChart() {
 
     // Fetch data from datasets repo
     const citizenCountFileUrl: string = 'https://raw.githubusercontent.com/nation3/nationcred-datasets/main/data-sources/citizens/citizen-count-per-week.csv'
-    console.info('Fetching data:', citizenCountFileUrl)
+    console.info('Fetching citizenCount data:', citizenCountFileUrl)
     Papa.parse(citizenCountFileUrl, {
       download: true,
       header: true,
@@ -108,13 +108,54 @@ export function CitizenChart() {
   return <Line ref={chartRef} data={chartData} />
 }
 
+export function CitizenList() {
+  console.info('CitizenList')
+
+  const [citizenData, setData] = useState([])
+  console.log('citizenData.length:', citizenData.length)
+
+  useEffect(() => {
+    console.info('CitizenList useEffect')
+
+    // Fetch data from datasets repo
+    const citizenDataFileUrl: string = 'https://raw.githubusercontent.com/nation3/nationcred-datasets/main/data-sources/citizens/citizens.csv'
+    console.info('Fetching citizen data:', citizenDataFileUrl)
+    Papa.parse(citizenDataFileUrl, {
+      download: true,
+      header: true,
+      skipEmptyLines: true,
+      dynamicTyping: true,
+      complete: (result: any) => {
+        console.info('Fetching citizen data complete')
+        setData(result.data)
+      }
+    })
+  }, [])
+  
+  return (
+    <>
+      <div className="grid xl:grid-cols-2 mt-2 gap-8">
+        {
+          citizenData.map((citizen) => (
+            <HomeCard
+              passportId={citizen.passport_id}
+              ethAddress={citizen.eth_address}
+              ensName={citizen.ens_name}
+            />
+          ))
+        }
+      </div>
+    </>
+  )
+}
+
 const Home: NextPage = () => {
   console.info('NextPage')  
 
   return (
     <>
       <div className="flex flex-col max-w-3xl">
-        <h1 className="card-title text-center text-3xl font-semibold mb-8">
+        <h1 className="card-title text-3xl font-semibold mb-8">
           Nation3 Citizens
           <Image src={flag} width={36} height={36} />
         </h1>
@@ -125,40 +166,7 @@ const Home: NextPage = () => {
           Get to know your fellow citizens:
         </p>
 
-        <div className="grid xl:grid-cols-2 mt-2 gap-8">
-          <HomeCard
-            href="/profile/1"
-            icon={
-              <IdentificationIcon className="h-5 w-5 absolute right-8 text-n3blue" />
-            }
-            title="Citizen #1"
-            linkText="View citizen profile"
-          >
-            NationCred: 10/100
-          </HomeCard>
-
-          <HomeCard
-            href="/profile/2"
-            icon={
-              <IdentificationIcon className="h-5 w-5 absolute right-8 text-n3blue" />
-            }
-            title="Citizen #2"
-            linkText="View citizen profile"
-          >
-            NationCred: 0/100
-          </HomeCard>
-
-          <HomeCard
-            href="/profile/3"
-            icon={
-              <IdentificationIcon className="h-5 w-5 absolute right-8 text-n3blue" />
-            }
-            title="Citizen #3"
-            linkText="View citizen profile"
-          >
-            NationCred: 3/100
-          </HomeCard>
-        </div>
+        <CitizenList />
       </div>
     </>
   )
