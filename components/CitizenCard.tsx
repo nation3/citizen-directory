@@ -8,7 +8,8 @@ import { IdentificationIcon } from '@heroicons/react/24/outline'
 export default function CitizenCard({
   passportId,
   ethAddress,
-  ensName
+  ensName,
+  votingPower
 }: any) {
   return (
     <Link href={`/profile/${passportId}`} passHref>
@@ -33,7 +34,8 @@ export default function CitizenCard({
             </h2>
           </div>
 
-          🎗️ NationCred: ?/???
+          🎗️ NationCred: ?/???<br />
+          🗳️ Voting power: {votingPower.toFixed(2)}
 
           <GradientLink text="View citizen profile" href={`/profile/${passportId}`}>link</GradientLink>
         </div>
