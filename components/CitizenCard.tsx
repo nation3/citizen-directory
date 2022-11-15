@@ -26,7 +26,7 @@ export default function CitizenCard({
                 <img className="mask mask-circle h-12 w-12" src={`https://cdn.stamp.fyi/avatar/eth:${ethAddress}?s=144`} />
               </>
             ) : (
-              <Blockies className="mask mask-circle" seed={Math.random().toString()} size={12} />
+              <Blockies className="mask mask-circle" seed={ethAddress} size={12} />
             )}
 
             <h2 className="px-3 card-title text-center font-medium">
