@@ -1,9 +1,6 @@
-import React, { Context, useEffect, useRef, useState } from "react"
-import { IdentificationIcon } from "@heroicons/react/24/outline"
+import React, { useEffect, useRef, useState } from "react"
 import type { NextPage } from "next"
 import Image from "next/image"
-import Link from "next/link"
-import GradientLink from "../components/GradientLink"
 import HomeCard from '../components/CitizenCard'
 import flag from '../public/flag.svg'
 import Papa from 'papaparse'
@@ -13,6 +10,7 @@ import {
   CategoryScale,
   LinearScale,
   PointElement,
+  LineController,
   LineElement,
   Title,
   Tooltip,
@@ -20,11 +18,12 @@ import {
   Filler,
   ChartData
 } from 'chart.js'
-import { Line } from 'react-chartjs-2'
+import { Chart } from 'react-chartjs-2'
 ChartJS.register(
   CategoryScale,
   LinearScale,
   PointElement,
+  LineController,
   LineElement,
   Filler,
   Title,
@@ -105,7 +104,7 @@ export function CitizenChart() {
     })
   }, [])
 
-  return <Line ref={chartRef} data={chartData} />
+  return <Chart type='line' ref={chartRef} data={chartData} />
 }
 
 export function CitizenList() {
@@ -136,7 +135,7 @@ export function CitizenList() {
     <>
       <div className="grid xl:grid-cols-2 mt-2 gap-8">
         {
-          citizenData.map((citizen) => (
+          citizenData.map((citizen: any) => (
             <HomeCard
               key={citizen.passport_id}
               passportId={citizen.passport_id}
