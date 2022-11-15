@@ -70,7 +70,7 @@ export function CitizenChart() {
         const week_end_dates: string[] = []
         const total_citizen_count: number[] = []
         const active_citizen_count: number[] = []
-        result.data.forEach((row: Object, i: number) => {
+        result.data.forEach((row: any, i: number) => {
           console.info(`row ${i}`, row)
           week_end_dates[i] = String(row.week_end)
           total_citizen_count[i] = Number(row.total_citizens)
