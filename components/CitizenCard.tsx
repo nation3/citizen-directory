@@ -3,6 +3,7 @@ import GradientLink from './GradientLink'
 
 // @ts-expect-error
 import Blockies from 'react-blockies'
+
 import { IdentificationIcon } from '@heroicons/react/24/outline'
 
 export default function CitizenCard({
@@ -12,7 +13,7 @@ export default function CitizenCard({
   votingPower
 }: any) {
   return (
-    <Link href={`/profile/${passportId}`} passHref>
+    <Link href={`/profile/${ethAddress}`} passHref>
       <div className="card bg-base-100 shadow-md transition ease-in-out hover:-translate-y-1 cursor-pointer">
         <div className="card-body items-stretch items-center ">
           <div className="absolute right-8">
@@ -22,9 +23,7 @@ export default function CitizenCard({
 
           <div className="flex">
             {ensName ? (
-              <>
-                <img className="mask mask-circle h-12 w-12" src={`https://cdn.stamp.fyi/avatar/eth:${ethAddress}?s=144`} />
-              </>
+              <img className="mask mask-circle h-12 w-12" src={`https://cdn.stamp.fyi/avatar/eth:${ethAddress}?s=144`} />
             ) : (
               <Blockies className="mask mask-circle" seed={ethAddress} size={12} />
             )}
@@ -37,7 +36,7 @@ export default function CitizenCard({
           🎗️ NationCred: ?/???<br />
           🗳️ Voting power: {votingPower.toFixed(2)}
 
-          <GradientLink text="View citizen profile" href={`/profile/${passportId}`}>link</GradientLink>
+          <GradientLink text="View citizen profile" href={`/profile/${ethAddress}`}>link</GradientLink>
         </div>
       </div>
     </Link>
