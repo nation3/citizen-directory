@@ -8,7 +8,8 @@ import { IdentificationIcon } from '@heroicons/react/24/outline'
 export default function CitizenCard({
   passportId,
   ethAddress,
-  ensName
+  ensName,
+  votingPower
 }: any) {
   return (
     <Link href={`/profile/${passportId}`} passHref>
@@ -25,7 +26,7 @@ export default function CitizenCard({
                 <img className="mask mask-circle h-12 w-12" src={`https://cdn.stamp.fyi/avatar/eth:${ethAddress}?s=144`} />
               </>
             ) : (
-              <Blockies className="mask mask-circle" seed={Math.random().toString()} size={12} />
+              <Blockies className="mask mask-circle" seed={ethAddress} size={12} />
             )}
 
             <h2 className="px-3 card-title text-center font-medium">
@@ -33,7 +34,8 @@ export default function CitizenCard({
             </h2>
           </div>
 
-          🎗️ NationCred: ?/???
+          🎗️ NationCred: ?/???<br />
+          🗳️ Voting power: {votingPower.toFixed(2)}
 
           <GradientLink text="View citizen profile" href={`/profile/${passportId}`}>link</GradientLink>
         </div>

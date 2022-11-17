@@ -141,6 +141,7 @@ export function CitizenList() {
               passportId={citizen.passport_id}
               ethAddress={citizen.eth_address}
               ensName={citizen.ens_name}
+              votingPower={citizen.voting_power}
             />
           ))
         }
