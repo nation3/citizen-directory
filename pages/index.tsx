@@ -150,8 +150,8 @@ export function CitizenList() {
   )
 }
 
-const Home: NextPage = () => {
-  console.info('NextPage')  
+const HomePage: NextPage = () => {
+  console.info('HomePage')
 
   return (
     <>
