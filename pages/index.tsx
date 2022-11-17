@@ -173,4 +173,4 @@ const HomePage: NextPage = () => {
   )
 }
 
-export default Home
+export default HomePage
