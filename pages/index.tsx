@@ -56,7 +56,7 @@ export function CitizenChart() {
     gradientGreen.addColorStop(1, 'rgba(136, 241, 187, 0.3)')
 
     // Fetch data from datasets repo
-    const citizenCountFileUrl: string = 'https://raw.githubusercontent.com/nation3/nationcred-datasets/main/data-sources/citizens/citizen-count-per-week.csv'
+    const citizenCountFileUrl: string = 'https://raw.githubusercontent.com/nation3/nationcred-datasets/main/data-sources/citizens/output/citizen-count-per-week.csv'
     console.info('Fetching citizenCount data:', citizenCountFileUrl)
     Papa.parse(citizenCountFileUrl, {
       download: true,
@@ -117,7 +117,7 @@ export function CitizenList() {
     console.info('CitizenList useEffect')
 
     // Fetch data from datasets repo
-    const citizenDataFileUrl: string = 'https://raw.githubusercontent.com/nation3/nationcred-datasets/main/data-sources/citizens/citizens.csv'
+    const citizenDataFileUrl: string = 'https://raw.githubusercontent.com/nation3/nationcred-datasets/main/data-sources/citizens/output/citizens.csv'
     console.info('Fetching citizen data:', citizenDataFileUrl)
     Papa.parse(citizenDataFileUrl, {
       download: true,
