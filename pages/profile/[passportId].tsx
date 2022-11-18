@@ -1,5 +1,6 @@
-import { NextPage } from "next"
 import { useEffect, useRef, useState } from "react"
+import { NextPage } from "next"
+import Image from "next/image"
 import dework from '../../public/dework.svg'
 
 // @ts-expect-error
@@ -21,7 +22,6 @@ import {
   ChartData
 } from 'chart.js'
 import { Chart } from 'react-chartjs-2'
-import Image from "next/image"
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -199,17 +199,17 @@ const ProfilePage: NextPage = ({ profile }: any) => {
     <>
       <div className="flex">
         {profile.ensName ? (
-          <img className="mask mask-circle h-12 w-12" src={`https://cdn.stamp.fyi/avatar/eth:${profile.ethAddress}?s=144`} />
+          <img className="mask mask-circle h-24 w-24" src={`https://cdn.stamp.fyi/avatar/eth:${profile.ethAddress}?s=144`} />
         ) : (
           <Blockies className="mask mask-circle" seed={profile.ethAddress} size={24} />
         )}
 
         <div className="ml-4 font-semibold">
           <h1 className="text-4xl mt-2">
-            {profile.ethAddress.substring(0, 6)}...{profile.ethAddress.slice(-4)}
+            {profile.ensName ? profile.ensName : `${profile.ethAddress.substring(0, 6)}...${profile.ethAddress.slice(-4)}`}
           </h1>
           <h2 className="text-2xl text-gray-400 mt-2">
-            Citizen #???
+            Citizen #{profile.passportId}
           </h2>
         </div>
       </div>
@@ -237,6 +237,8 @@ const ProfilePage: NextPage = ({ profile }: any) => {
       </div>
 
       <h2 className="text-2xl mt-8">🗳️ Voting Power</h2>
+
+      <p className="mt-4">Voting power: {profile.votingPower.toFixed(2)}</p>
       
       <div className="card bg-base-100 mt-4">
         <div className="card-body">
@@ -254,8 +256,8 @@ export async function getStaticPaths() {
 
   return {
     paths: [
-      { params: { ethAddress: '0x123abc' } },
-      { params: { ethAddress: '0x456def' } }
+      // { params: { passportId: '0' } },
+      // { params: { passportId: '1' } }
     ],
     fallback: 'blocking'
   }
@@ -266,12 +268,20 @@ export async function getStaticProps(context: any) {
 
   console.info('context:', context)
 
-  const ethAddress: string = context.params.ethAddress
-  console.info('ethAddress:', ethAddress)
+  const passportId: string = context.params.passportId
+  console.info('passportId:', passportId)
+
+  const citizensJsonUrl: string = 'https://raw.githubusercontent.com/nation3/nationcred-datasets/a04c42fb5f78f1c57304c31ecccc3032c98b9a8a/data-sources/citizens/output/citizens.json'
+  console.info('Fetching Citizen data:', citizensJsonUrl)
+  const response = await fetch(citizensJsonUrl)
+  const citizens = await response.json()
+  
+  const citizen = citizens[passportId]
+  console.info('citizen:', citizen)
 
   return {
     props: {
-      profile: { ethAddress: ethAddress }
+      profile: citizen
     }
   }
 }
