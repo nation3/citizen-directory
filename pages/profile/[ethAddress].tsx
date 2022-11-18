@@ -1,5 +1,6 @@
 import { NextPage } from "next"
 import { useEffect, useRef, useState } from "react"
+import dework from '../../public/dework.svg'
 
 // @ts-expect-error
 import Blockies from 'react-blockies'
@@ -20,6 +21,7 @@ import {
   ChartData
 } from 'chart.js'
 import { Chart } from 'react-chartjs-2'
+import Image from "next/image"
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -118,6 +120,76 @@ export function NationCredChart({ profile }: any) {
   return <Chart type='line' ref={chartRef} data={chartData} />
 }
 
+export function DeworkChart({ profile }: any) {
+  console.info('DeworkChart')
+
+  const chartRef = useRef<ChartJS>(null)
+  const [chartData, setChartData] = useState<ChartData<'line'>>({
+    datasets: [],
+  })
+
+  useEffect(() => {
+    console.info('useEffect')
+    const chart = chartRef.current
+
+    if (!chart) {
+      return
+    }
+
+    let colorGradient = chart.ctx.createLinearGradient(0, 0, 0, 400)
+    colorGradient.addColorStop(0, 'rgba(231, 88, 143, 0.4)')
+    colorGradient.addColorStop(1, 'rgba(231, 88, 143, 0.2)')
+
+    // Fetch data from datasets repo
+    const deworkFileUrl: string = `https://raw.githubusercontent.com/nation3/nationcred-datasets/main/data-sources/dework/output/dework-${profile.ethAddress}.csv`
+    console.info('Fetching Dework data:', deworkFileUrl)
+    Papa.parse(deworkFileUrl, {
+      download: true,
+      header: true,
+      skipEmptyLines: true,
+      dynamicTyping: true,
+      complete: (result: any) => {
+        console.info('result:', result)
+
+        const week_ends: string[] = []
+        const tasks_completed: number[] = []
+        const task_points: number[] = []
+        result.data.forEach((row: any, i: number) => {
+          console.info(`row ${i}`, row)
+          week_ends[i] = String(row.week_end)
+          tasks_completed[i] = Number(row.tasks_completed)
+          task_points[i] = Number(row.task_points)
+        })
+        console.info('week_ends:', week_ends)
+        console.info('tasks_completed:', tasks_completed)
+        console.info('task_points:', task_points)
+    
+        const data = {
+          labels: week_ends,
+          datasets: [
+            {
+              label: 'Tasks completed',
+              data: tasks_completed,
+              borderColor: 'rgba(231, 88, 143, 0.4)',
+              backgroundColor: colorGradient,
+              fill: true
+            },
+            {
+              label: 'Task points ',
+              data: task_points,
+              borderColor: 'rgba(133, 114, 217, 0.4)'
+            }
+          ]
+        }
+    
+        setChartData(data)
+      }
+    })
+  }, [])
+
+  return <Chart type='line' ref={chartRef} data={chartData} />
+}
+
 const ProfilePage: NextPage = ({ profile }: any) => {
   console.info('ProfilePage')
 
@@ -153,6 +225,14 @@ const ProfilePage: NextPage = ({ profile }: any) => {
       <div className="card bg-base-100 mt-4">
         <div className="card-body">
           <NationCredChart profile={profile} />
+        </div>
+      </div>
+
+      <h2 className="text-2xl mt-8"><Image src={dework} width={22} height={22} /> Dework</h2>
+      
+      <div className="card bg-base-100 mt-4">
+        <div className="card-body">
+          <DeworkChart profile={profile} />
         </div>
       </div>
 
