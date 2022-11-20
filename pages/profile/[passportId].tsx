@@ -271,7 +271,7 @@ export async function getStaticProps(context: any) {
   const passportId: string = context.params.passportId
   console.info('passportId:', passportId)
 
-  const citizensJsonUrl: string = 'https://raw.githubusercontent.com/nation3/nationcred-datasets/a04c42fb5f78f1c57304c31ecccc3032c98b9a8a/data-sources/citizens/output/citizens.json'
+  const citizensJsonUrl: string = 'https://raw.githubusercontent.com/nation3/nationcred-datasets/main/data-sources/citizens/output/citizens.json'
   console.info('Fetching Citizen data:', citizensJsonUrl)
   const response = await fetch(citizensJsonUrl)
   const citizens = await response.json()
