@@ -3,6 +3,7 @@ import GradientLink from './GradientLink'
 
 // @ts-expect-error
 import Blockies from 'react-blockies'
+
 import { IdentificationIcon } from '@heroicons/react/24/outline'
 
 export default function CitizenCard({
@@ -22,9 +23,7 @@ export default function CitizenCard({
 
           <div className="flex">
             {ensName ? (
-              <>
-                <img className="mask mask-circle h-12 w-12" src={`https://cdn.stamp.fyi/avatar/eth:${ethAddress}?s=144`} />
-              </>
+              <img className="mask mask-circle h-12 w-12" src={`https://cdn.stamp.fyi/avatar/eth:${ethAddress}?s=144`} />
             ) : (
               <Blockies className="mask mask-circle" seed={ethAddress} size={12} />
             )}
