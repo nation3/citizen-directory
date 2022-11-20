@@ -55,7 +55,7 @@ export function NationCredChart({ profile }: any) {
     colorGradient.addColorStop(1, 'rgba(213, 163, 152, 0.8)')
 
     // Fetch data from datasets repo
-    const sourceCredFileUrl: string = `https://raw.githubusercontent.com/nation3/nationcred-datasets/f9e5b8d30b969815a918de619fa4e89a1c800ce3/data-sources/sourcecred/output/sourcecred-${profile.ethAddress}.csv`
+    const sourceCredFileUrl: string = `https://raw.githubusercontent.com/nation3/nationcred-datasets/main/data-sources/sourcecred/output/sourcecred-${profile.ethAddress}.csv`
     console.info('Fetching SourceCred data:', sourceCredFileUrl)
     Papa.parse(sourceCredFileUrl, {
       download: true,
