@@ -55,7 +55,7 @@ export function NationCredChart({ profile }: any) {
     colorGradient.addColorStop(1, 'rgba(213, 163, 152, 0.8)')
 
     // Fetch data from datasets repo
-    const sourceCredFileUrl: string = `https://raw.githubusercontent.com/nation3/nationcred-datasets/main/data-sources/sourcecred/output/sourcecred-${profile.ethAddress}.csv`
+    const sourceCredFileUrl: string = `https://raw.githubusercontent.com/nation3/nationcred-datasets/main/data-sources/sourcecred/output/sourcecred-${profile.ownerAddress}.csv`
     console.info('Fetching SourceCred data:', sourceCredFileUrl)
     Papa.parse(sourceCredFileUrl, {
       download: true,
@@ -141,7 +141,7 @@ export function DeworkChart({ profile }: any) {
     colorGradient.addColorStop(1, 'rgba(231, 88, 143, 0.2)')
 
     // Fetch data from datasets repo
-    const deworkFileUrl: string = `https://raw.githubusercontent.com/nation3/nationcred-datasets/main/data-sources/dework/output/dework-${profile.ethAddress}.csv`
+    const deworkFileUrl: string = `https://raw.githubusercontent.com/nation3/nationcred-datasets/main/data-sources/dework/output/dework-${profile.ownerAddress}.csv`
     console.info('Fetching Dework data:', deworkFileUrl)
     Papa.parse(deworkFileUrl, {
       download: true,
@@ -199,14 +199,14 @@ const ProfilePage: NextPage = ({ profile }: any) => {
     <>
       <div className="flex">
         {profile.ensName ? (
-          <img className="mask mask-circle h-24 w-24" src={`https://cdn.stamp.fyi/avatar/eth:${profile.ethAddress}?s=144`} />
+          <img className="mask mask-circle h-24 w-24" src={`https://cdn.stamp.fyi/avatar/eth:${profile.ownerAddress}?s=144`} />
         ) : (
-          <Blockies className="mask mask-circle" seed={profile.ethAddress} size={24} />
+          <Blockies className="mask mask-circle" seed={profile.ownerAddress} size={24} />
         )}
 
         <div className="ml-4 font-semibold">
           <h1 className="text-4xl mt-2">
-            {profile.ensName ? profile.ensName : `${profile.ethAddress.substring(0, 6)}...${profile.ethAddress.slice(-4)}`}
+            {profile.ensName ? profile.ensName : `${profile.ownerAddress.substring(0, 6)}...${profile.ownerAddress.slice(-4)}`}
           </h1>
           <h2 className="text-2xl text-gray-400 mt-2">
             Citizen #{profile.passportId}
