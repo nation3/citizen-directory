@@ -13,7 +13,7 @@ export default function CitizenCard({
   votingPower
 }: any) {
   return (
-    <Link href={`/profile/${passportId}`} passHref>
+    <Link href={`/${passportId}`} passHref>
       <div className="card bg-base-100 shadow-md transition ease-in-out hover:-translate-y-1 cursor-pointer">
         <div className="card-body items-stretch items-center ">
           <div className="absolute right-8">
@@ -36,7 +36,7 @@ export default function CitizenCard({
           🎗️ NationCred: ?/???<br />
           🗳️ Voting power: {votingPower.toFixed(2)}
 
-          <GradientLink text="View citizen profile" href={`/profile/${passportId}`}>link</GradientLink>
+          <GradientLink text="View citizen profile" href={`/${passportId}`}>link</GradientLink>
         </div>
       </div>
     </Link>
