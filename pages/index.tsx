@@ -139,7 +139,7 @@ export function CitizenList() {
             <HomeCard
               key={citizen.passport_id}
               passportId={citizen.passport_id}
-              ethAddress={citizen.eth_address}
+              ethAddress={citizen.owner_address}
               ensName={citizen.ens_name}
               votingPower={citizen.voting_power}
             />
