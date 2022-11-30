@@ -55,7 +55,7 @@ export function NationCredChart({ profile }: any) {
     colorGradient.addColorStop(1, 'rgba(213, 163, 152, 0.8)')
 
     // Fetch data from datasets repo
-    const sourceCredFileUrl: string = `https://raw.githubusercontent.com/nation3/nationcred-datasets/main/data-sources/sourcecred/output/sourcecred-${profile.ownerAddress}.csv`
+    const sourceCredFileUrl: string = `https://raw.githubusercontent.com/nation3/nationcred-datasets/main/data-sources/sourcecred/output/sourcecred-${profile.passportId}.csv`
     console.info('Fetching SourceCred data:', sourceCredFileUrl)
     Papa.parse(sourceCredFileUrl, {
       download: true,
@@ -141,7 +141,7 @@ export function DeworkChart({ profile }: any) {
     colorGradient.addColorStop(1, 'rgba(231, 88, 143, 0.2)')
 
     // Fetch data from datasets repo
-    const deworkFileUrl: string = `https://raw.githubusercontent.com/nation3/nationcred-datasets/main/data-sources/dework/output/dework-${profile.ownerAddress}.csv`
+    const deworkFileUrl: string = `https://raw.githubusercontent.com/nation3/nationcred-datasets/main/data-sources/dework/output/dework-${profile.passportId}.csv`
     console.info('Fetching Dework data:', deworkFileUrl)
     Papa.parse(deworkFileUrl, {
       download: true,
