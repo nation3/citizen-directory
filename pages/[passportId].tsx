@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react"
 import { NextPage } from "next"
 import Image from "next/image"
-import dework from '../../public/dework.svg'
+import dework from '../public/dework.svg'
 
 // @ts-expect-error
 import Blockies from 'react-blockies'
@@ -34,7 +34,7 @@ ChartJS.register(
   Legend
 )
 
-export function NationCredChart({ profile }: any) {
+export function NationCredChart({ citizen }: any) {
   console.info('NationCredChart')
 
   const chartRef = useRef<ChartJS>(null)
@@ -55,7 +55,7 @@ export function NationCredChart({ profile }: any) {
     colorGradient.addColorStop(1, 'rgba(213, 163, 152, 0.8)')
 
     // Fetch data from datasets repo
-    const sourceCredFileUrl: string = `https://raw.githubusercontent.com/nation3/nationcred-datasets/main/data-sources/sourcecred/output/sourcecred-${profile.passportId}.csv`
+    const sourceCredFileUrl: string = `https://raw.githubusercontent.com/nation3/nationcred-datasets/main/data-sources/sourcecred/output/sourcecred-${citizen.passportId}.csv`
     console.info('Fetching SourceCred data:', sourceCredFileUrl)
     Papa.parse(sourceCredFileUrl, {
       download: true,
@@ -120,7 +120,7 @@ export function NationCredChart({ profile }: any) {
   return <Chart type='line' ref={chartRef} data={chartData} />
 }
 
-export function DeworkChart({ profile }: any) {
+export function DeworkChart({ citizen }: any) {
   console.info('DeworkChart')
 
   const chartRef = useRef<ChartJS>(null)
@@ -141,7 +141,7 @@ export function DeworkChart({ profile }: any) {
     colorGradient.addColorStop(1, 'rgba(231, 88, 143, 0.2)')
 
     // Fetch data from datasets repo
-    const deworkFileUrl: string = `https://raw.githubusercontent.com/nation3/nationcred-datasets/main/data-sources/dework/output/dework-${profile.passportId}.csv`
+    const deworkFileUrl: string = `https://raw.githubusercontent.com/nation3/nationcred-datasets/main/data-sources/dework/output/dework-${citizen.passportId}.csv`
     console.info('Fetching Dework data:', deworkFileUrl)
     Papa.parse(deworkFileUrl, {
       download: true,
@@ -190,26 +190,26 @@ export function DeworkChart({ profile }: any) {
   return <Chart type='line' ref={chartRef} data={chartData} />
 }
 
-const ProfilePage: NextPage = ({ profile }: any) => {
+const ProfilePage: NextPage = ({ citizen }: any) => {
   console.info('ProfilePage')
 
-  console.info('profile:', profile)
+  console.info('citizen:', citizen)
 
   return (
     <>
       <div className="flex">
-        {profile.ensName ? (
-          <img className="mask mask-circle h-24 w-24" src={`https://cdn.stamp.fyi/avatar/eth:${profile.ownerAddress}?s=144`} />
+        {citizen.ensName ? (
+          <img className="mask mask-circle h-24 w-24" src={`https://cdn.stamp.fyi/avatar/eth:${citizen.ownerAddress}?s=144`} />
         ) : (
-          <Blockies className="mask mask-circle" seed={profile.ownerAddress} size={24} />
+          <Blockies className="mask mask-circle" seed={citizen.ownerAddress} size={24} />
         )}
 
         <div className="ml-4 font-semibold">
           <h1 className="text-4xl mt-2">
-            {profile.ensName ? profile.ensName : `${profile.ownerAddress.substring(0, 6)}...${profile.ownerAddress.slice(-4)}`}
+            {citizen.ensName ? citizen.ensName : `${citizen.ownerAddress.substring(0, 6)}...${citizen.ownerAddress.slice(-4)}`}
           </h1>
           <h2 className="text-2xl text-gray-400 mt-2">
-            Citizen #{profile.passportId}
+            Citizen #{citizen.passportId}
           </h2>
         </div>
       </div>
@@ -224,7 +224,7 @@ const ProfilePage: NextPage = ({ profile }: any) => {
       
       <div className="card bg-base-100 mt-4">
         <div className="card-body">
-          <NationCredChart profile={profile} />
+          <NationCredChart citizen={citizen} />
         </div>
       </div>
 
@@ -232,13 +232,13 @@ const ProfilePage: NextPage = ({ profile }: any) => {
       
       <div className="card bg-base-100 mt-4">
         <div className="card-body">
-          <DeworkChart profile={profile} />
+          <DeworkChart citizen={citizen} />
         </div>
       </div>
 
       <h2 className="text-2xl mt-8">🗳️ Voting Power</h2>
 
-      <p className="mt-4">Voting power: {profile.votingPower.toFixed(2)}</p>
+      <p className="mt-4">Voting power: {citizen.votingPower.toFixed(2)}</p>
       
       <div className="card bg-base-100 mt-4">
         <div className="card-body">
@@ -281,7 +281,7 @@ export async function getStaticProps(context: any) {
 
   return {
     props: {
-      profile: citizen
+      citizen: citizen
     }
   }
 }
