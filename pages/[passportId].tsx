@@ -211,7 +211,7 @@ export function VotingPowerChart({ citizen }: any) {
     colorGradient.addColorStop(1, 'rgba(53, 162, 235, 0.1)')
 
     // Fetch data from datasets repo
-    const deworkFileUrl: string = `https://raw.githubusercontent.com/nation3/nationcred-datasets/5d300986619b9d21d427510114483ce9e27072fa/data-sources/citizens/output/citizen-${citizen.passportId}.csv`
+    const deworkFileUrl: string = `https://raw.githubusercontent.com/nation3/nationcred-datasets/main/data-sources/citizens/output/citizen-${citizen.passportId}.csv`
     console.info('Fetching Voting Power data:', deworkFileUrl)
     Papa.parse(deworkFileUrl, {
       download: true,
