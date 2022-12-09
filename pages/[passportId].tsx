@@ -190,6 +190,76 @@ export function DeworkChart({ citizen }: any) {
   return <Chart type='line' ref={chartRef} data={chartData} />
 }
 
+export function VotingPowerChart({ citizen }: any) {
+  console.info('VotingPowerChart')
+
+  const chartRef = useRef<ChartJS>(null)
+  const [chartData, setChartData] = useState<ChartData<'line'>>({
+    datasets: [],
+  })
+
+  useEffect(() => {
+    console.info('useEffect')
+    const chart = chartRef.current
+
+    if (!chart) {
+      return
+    }
+
+    let colorGradient = chart.ctx.createLinearGradient(0, 0, 0, 400)
+    colorGradient.addColorStop(0, 'rgba(53, 162, 235, 0.2)')
+    colorGradient.addColorStop(1, 'rgba(53, 162, 235, 0.1)')
+
+    // Fetch data from datasets repo
+    const deworkFileUrl: string = `https://raw.githubusercontent.com/nation3/nationcred-datasets/5d300986619b9d21d427510114483ce9e27072fa/data-sources/citizens/output/citizen-${citizen.passportId}.csv`
+    console.info('Fetching Voting Power data:', deworkFileUrl)
+    Papa.parse(deworkFileUrl, {
+      download: true,
+      header: true,
+      skipEmptyLines: true,
+      dynamicTyping: true,
+      complete: (result: any) => {
+        console.info('result:', result)
+
+        const week_ends: string[] = []
+        const voting_power: number[] = []
+        result.data.forEach((row: any, i: number) => {
+          console.info(`row ${i}`, row)
+          week_ends[i] = String(row.week_end)
+          voting_power[i] = Number(row.voting_power)
+        })
+        console.info('week_ends:', week_ends)
+        console.info('voting_power:', voting_power)
+    
+        const data = {
+          labels: week_ends,
+          datasets: [
+            {
+              label: 'Voting power',
+              data: voting_power,
+              borderColor: 'rgba(53, 162, 235, 0.4)',
+              backgroundColor: colorGradient,
+              fill: true
+            }
+          ]
+        }
+    
+        setChartData(data)
+      }
+    })
+  }, [])
+
+  const options = {
+    scales: {
+      y: {
+        min: 0
+      }
+    }
+  }
+
+  return <Chart type='line' ref={chartRef} data={chartData} options={options} />
+}
+
 const ProfilePage: NextPage = ({ citizen }: any) => {
   console.info('ProfilePage')
 
@@ -239,10 +309,9 @@ const ProfilePage: NextPage = ({ citizen }: any) => {
       <h2 className="text-2xl mt-8">🗳️ Voting Power</h2>
 
       <p className="mt-4">Voting power: {citizen.votingPower.toFixed(2)}</p>
-      
       <div className="card bg-base-100 mt-4">
         <div className="card-body">
-          <button className="btn btn-disabled bg-transparent loading">Loading votes...</button>
+          <VotingPowerChart citizen={citizen} />
         </div>
       </div>
     </>
