@@ -55,9 +55,9 @@ export function NationCredChart({ citizen }: any) {
     colorGradient.addColorStop(1, 'rgba(213, 163, 152, 0.8)')
 
     // Fetch data from datasets repo
-    const sourceCredFileUrl: string = `https://raw.githubusercontent.com/nation3/nationcred-datasets/main/nationcred/output/nationcred-${citizen.passportId}.csv`
-    console.info('Fetching SourceCred data:', sourceCredFileUrl)
-    Papa.parse(sourceCredFileUrl, {
+    const nationCredFileUrl: string = `https://raw.githubusercontent.com/nation3/nationcred-datasets/main/nationcred/output/nationcred-${citizen.passportId}.csv`
+    console.info('Fetching NationCred data:', nationCredFileUrl)
+    Papa.parse(nationCredFileUrl, {
       download: true,
       header: true,
       skipEmptyLines: true,
@@ -360,7 +360,7 @@ const ProfilePage: NextPage = ({ citizen }: any) => {
         </div>
       </div>
 
-      <h2 className="text-2xl mt-8">🎗️ NationCred</h2>
+      <h2 className="text-2xl mt-8">📜 NationCred</h2>
       
       <div className="card bg-base-100 mt-4">
         <div className="card-body">
