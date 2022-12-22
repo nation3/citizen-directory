@@ -55,6 +55,76 @@ export function NationCredChart({ citizen }: any) {
     colorGradient.addColorStop(1, 'rgba(213, 163, 152, 0.8)')
 
     // Fetch data from datasets repo
+    const sourceCredFileUrl: string = `https://raw.githubusercontent.com/nation3/nationcred-datasets/main/nationcred/output/nationcred-${citizen.passportId}.csv`
+    console.info('Fetching SourceCred data:', sourceCredFileUrl)
+    Papa.parse(sourceCredFileUrl, {
+      download: true,
+      header: true,
+      skipEmptyLines: true,
+      dynamicTyping: true,
+      complete: (result: any) => {
+        console.info('result:', result)
+
+        const week_ends: string[] = []
+        const value_creation_hours: number[] = []
+        const nationcred_scores: number[] = []
+        result.data.forEach((row: any, i: number) => {
+          console.info(`row ${i}`, row)
+          week_ends[i] = String(row.week_end)
+          value_creation_hours[i] = Number(row.value_creation_hour)
+          nationcred_scores[i] = Number(row.nationcred_score)
+        })
+        console.info('week_ends:', week_ends)
+        console.info('value_creation_hours:', value_creation_hours)
+        console.info('nationcred_scores:', nationcred_scores)
+    
+        const data = {
+          labels: week_ends,
+          datasets: [
+            {
+              label: 'Value Creation Hour',
+              data: value_creation_hours,
+              borderColor: 'rgba(213, 163, 152, 0.4)',
+              backgroundColor: colorGradient,
+              fill: true
+            },
+            {
+              label: 'Nationcred score',
+              data: nationcred_scores,
+              borderColor: 'rgba(132, 116, 138, 0.2)'
+            }
+          ]
+        }
+    
+        setChartData(data)
+      }
+    })
+  }, [])
+
+  return <Chart type='line' ref={chartRef} data={chartData} />
+}
+
+export function SourceCredChart({ citizen }: any) {
+  console.info('SourceCredChart')
+
+  const chartRef = useRef<ChartJS>(null)
+  const [chartData, setChartData] = useState<ChartData<'line'>>({
+    datasets: [],
+  })
+
+  useEffect(() => {
+    console.info('useEffect')
+    const chart = chartRef.current
+
+    if (!chart) {
+      return
+    }
+
+    let colorGradient = chart.ctx.createLinearGradient(0, 0, 0, 400)
+    colorGradient.addColorStop(0, 'rgba(213, 163, 152, 0.2)')
+    colorGradient.addColorStop(1, 'rgba(213, 163, 152, 0.8)')
+
+    // Fetch data from datasets repo
     const sourceCredFileUrl: string = `https://raw.githubusercontent.com/nation3/nationcred-datasets/main/data-sources/sourcecred/output/sourcecred-${citizen.passportId}.csv`
     console.info('Fetching SourceCred data:', sourceCredFileUrl)
     Papa.parse(sourceCredFileUrl, {
@@ -295,6 +365,14 @@ const ProfilePage: NextPage = ({ citizen }: any) => {
       <div className="card bg-base-100 mt-4">
         <div className="card-body">
           <NationCredChart citizen={citizen} />
+        </div>
+      </div>
+
+      <h2 className="text-2xl mt-8">🎗️ SourceCred</h2>
+
+      <div className="card bg-base-100 mt-4">
+        <div className="card-body">
+          <SourceCredChart citizen={citizen} />
         </div>
       </div>
 
