@@ -68,15 +68,21 @@ export function NationCredChart({ citizen }: any) {
         const week_ends: string[] = []
         const value_creation_hours: number[] = []
         const nationcred_scores: number[] = []
+        const governance_hours: number[] = []
+        const operations_hours: number[] = []
         result.data.forEach((row: any, i: number) => {
           console.info(`row ${i}`, row)
           week_ends[i] = String(row.week_end)
           value_creation_hours[i] = Number(row.value_creation_hour)
           nationcred_scores[i] = Number(row.nationcred_score)
+          governance_hours[i] = Number(row.governance_hours)
+          operations_hours[i] = Number(row.operations_hours)
         })
         console.info('week_ends:', week_ends)
         console.info('value_creation_hours:', value_creation_hours)
         console.info('nationcred_scores:', nationcred_scores)
+        console.info('governance_hours:', governance_hours)
+        console.info('operations_hours:', operations_hours)
     
         const data = {
           labels: week_ends,
@@ -89,7 +95,17 @@ export function NationCredChart({ citizen }: any) {
               fill: true
             },
             {
-              label: 'Nationcred score',
+              label: 'Governance Hour',
+              data: governance_hours,
+              borderColor: 'rgba(132, 116, 138, 0.2)'
+            },
+            {
+              label: 'Operations Hour',
+              data: operations_hours,
+              borderColor: 'rgba(132, 116, 138, 0.2)'
+            },
+            {
+              label: 'Nationcred Score',
               data: nationcred_scores,
               borderColor: 'rgba(132, 116, 138, 0.2)'
             }
