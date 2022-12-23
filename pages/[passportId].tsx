@@ -73,7 +73,7 @@ export function NationCredChart({ citizen }: any) {
         result.data.forEach((row: any, i: number) => {
           console.info(`row ${i}`, row)
           week_ends[i] = String(row.week_end)
-          value_creation_hours[i] = Number(row.value_creation_hour)
+          value_creation_hours[i] = Number(row.value_creation_hours)
           nationcred_scores[i] = Number(row.nationcred_score)
           governance_hours[i] = Number(row.governance_hours)
           operations_hours[i] = Number(row.operations_hours)
