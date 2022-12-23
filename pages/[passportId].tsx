@@ -51,8 +51,8 @@ export function NationCredChart({ citizen }: any) {
     }
 
     let colorGradient = chart.ctx.createLinearGradient(0, 0, 0, 400)
-    colorGradient.addColorStop(0, 'rgba(213, 163, 152, 0.2)')
-    colorGradient.addColorStop(1, 'rgba(213, 163, 152, 0.8)')
+    colorGradient.addColorStop(0, 'rgba(250, 188, 60, 0.2)')
+    colorGradient.addColorStop(1, 'rgba(152, 247, 44, 0.8)')
 
     // Fetch data from datasets repo
     const nationCredFileUrl: string = `https://raw.githubusercontent.com/nation3/nationcred-datasets/main/nationcred/output/nationcred-${citizen.passportId}.csv`
@@ -90,14 +90,14 @@ export function NationCredChart({ citizen }: any) {
             {
               label: 'Value Creation Hour',
               data: value_creation_hours,
-              borderColor: 'rgba(213, 163, 152, 0.4)',
+              borderColor: 'rgba(56, 195, 255, 0.4)',
               backgroundColor: colorGradient,
               fill: true
             },
             {
               label: 'Governance Hour',
               data: governance_hours,
-              borderColor: 'rgba(132, 116, 138, 0.2)'
+              borderColor: 'rgba(19, 116, 138, 0.2)'
             },
             {
               label: 'Operations Hour',
@@ -107,7 +107,7 @@ export function NationCredChart({ citizen }: any) {
             {
               label: 'Nationcred Score',
               data: nationcred_scores,
-              borderColor: 'rgba(132, 116, 138, 0.2)'
+              borderColor: 'rgba(152, 247, 44, 0.2)'
             }
           ]
         }
