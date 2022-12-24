@@ -55,6 +55,25 @@ export function CitizenChart() {
     gradientGreen.addColorStop(0, 'rgba(136, 241, 187, 0.6)')
     gradientGreen.addColorStop(1, 'rgba(136, 241, 187, 0.3)')
 
+    // Fetch NationCred data
+    const nationCredFileUrl: string = 'https://raw.githubusercontent.com/nation3/nationcred-datasets/main/nationcred/output/nationcred-active-citizens.csv'
+    console.info('nationCredFileUrl:', nationCredFileUrl)
+    const active_citizens_count: number[] = []
+    Papa.parse(nationCredFileUrl, {
+      download: true,
+      header: true,
+      skipEmptyLines: true,
+      dynamicTyping: true,
+      complete: (result: any) => {
+        console.info('result:', result)
+        result.data.forEach((row: any, i: number) => {
+          console.info(`row ${i}`, row)
+          active_citizens_count[i] = Number(row.active_citizens_count) + 3
+        })
+        console.info('active_citizen_count:', active_citizens_count)
+      }
+    })
+
     // Fetch data from datasets repo
     const citizenCountFileUrl: string = 'https://raw.githubusercontent.com/nation3/nationcred-datasets/main/data-sources/citizens/output/citizen-count-per-week.csv'
     console.info('Fetching citizenCount data:', citizenCountFileUrl)
@@ -68,16 +87,13 @@ export function CitizenChart() {
 
         const week_end_dates: string[] = []
         const total_citizen_count: number[] = []
-        const active_citizen_count: number[] = []
         result.data.forEach((row: any, i: number) => {
           console.info(`row ${i}`, row)
           week_end_dates[i] = String(row.week_end)
           total_citizen_count[i] = Number(row.total_citizens)
-          active_citizen_count[i] = Number(row.active_citizens)
         })
         console.info('week_end_dates:', week_end_dates)
         console.info('total_citizen_count:', total_citizen_count)
-        console.info('active_citizen_count:', active_citizen_count)
     
         const data = {
           labels: week_end_dates,
@@ -91,7 +107,7 @@ export function CitizenChart() {
             },
             {
               label: 'Active Citizens',
-              data: active_citizen_count,
+              data: active_citizens_count,
               borderColor: 'rgba(136, 241, 187, 1)',
               backgroundColor: gradientGreen,
               fill: true
