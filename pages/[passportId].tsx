@@ -51,6 +51,92 @@ export function NationCredChart({ citizen }: any) {
     }
 
     let colorGradient = chart.ctx.createLinearGradient(0, 0, 0, 400)
+    colorGradient.addColorStop(0, 'rgba(250, 188, 60, 0.2)')
+    colorGradient.addColorStop(1, 'rgba(152, 247, 44, 0.8)')
+
+    // Fetch data from datasets repo
+    const nationCredFileUrl: string = `https://raw.githubusercontent.com/nation3/nationcred-datasets/main/nationcred/output/nationcred-${citizen.passportId}.csv`
+    console.info('Fetching NationCred data:', nationCredFileUrl)
+    Papa.parse(nationCredFileUrl, {
+      download: true,
+      header: true,
+      skipEmptyLines: true,
+      dynamicTyping: true,
+      complete: (result: any) => {
+        console.info('result:', result)
+
+        const week_ends: string[] = []
+        const value_creation_hours: number[] = []
+        const nationcred_scores: number[] = []
+        const governance_hours: number[] = []
+        const operations_hours: number[] = []
+        result.data.forEach((row: any, i: number) => {
+          console.info(`row ${i}`, row)
+          week_ends[i] = String(row.week_end)
+          value_creation_hours[i] = Number(row.value_creation_hours)
+          nationcred_scores[i] = Number(row.nationcred_score)
+          governance_hours[i] = Number(row.governance_hours)
+          operations_hours[i] = Number(row.operations_hours)
+        })
+        console.info('week_ends:', week_ends)
+        console.info('value_creation_hours:', value_creation_hours)
+        console.info('nationcred_scores:', nationcred_scores)
+        console.info('governance_hours:', governance_hours)
+        console.info('operations_hours:', operations_hours)
+    
+        const data = {
+          labels: week_ends,
+          datasets: [
+            {
+              label: 'Value Creation Hour',
+              data: value_creation_hours,
+              borderColor: 'rgba(56, 195, 255, 0.4)',
+              backgroundColor: colorGradient,
+              fill: true
+            },
+            {
+              label: 'Governance Hour',
+              data: governance_hours,
+              borderColor: 'rgba(19, 116, 138, 0.2)'
+            },
+            {
+              label: 'Operations Hour',
+              data: operations_hours,
+              borderColor: 'rgba(132, 116, 138, 0.2)'
+            },
+            {
+              label: 'Nationcred Score',
+              data: nationcred_scores,
+              borderColor: 'rgba(152, 247, 44, 0.2)'
+            }
+          ]
+        }
+    
+        setChartData(data)
+      }
+    })
+  }, [])
+
+  return <Chart type='line' ref={chartRef} data={chartData} />
+}
+
+export function SourceCredChart({ citizen }: any) {
+  console.info('SourceCredChart')
+
+  const chartRef = useRef<ChartJS>(null)
+  const [chartData, setChartData] = useState<ChartData<'line'>>({
+    datasets: [],
+  })
+
+  useEffect(() => {
+    console.info('useEffect')
+    const chart = chartRef.current
+
+    if (!chart) {
+      return
+    }
+
+    let colorGradient = chart.ctx.createLinearGradient(0, 0, 0, 400)
     colorGradient.addColorStop(0, 'rgba(213, 163, 152, 0.2)')
     colorGradient.addColorStop(1, 'rgba(213, 163, 152, 0.8)')
 
@@ -290,11 +376,19 @@ const ProfilePage: NextPage = ({ citizen }: any) => {
         </div>
       </div>
 
-      <h2 className="text-2xl mt-8">🎗️ NationCred</h2>
+      <h2 className="text-2xl mt-8">📜 NationCred</h2>
       
       <div className="card bg-base-100 mt-4">
         <div className="card-body">
           <NationCredChart citizen={citizen} />
+        </div>
+      </div>
+
+      <h2 className="text-2xl mt-8">🎗️ SourceCred</h2>
+
+      <div className="card bg-base-100 mt-4">
+        <div className="card-body">
+          <SourceCredChart citizen={citizen} />
         </div>
       </div>
 
