@@ -68,7 +68,7 @@ export function CitizenChart() {
         console.info('result:', result)
         result.data.forEach((row: any, i: number) => {
           console.info(`row ${i}`, row)
-          active_citizens_count[i] = Number(row.active_citizens_count) + 2
+          active_citizens_count[i] = Number(row.active_citizens_count) + 2 // TODO: remove ' + 2' when all active citizens have been linked to SourceCred
         })
         console.info('active_citizen_count:', active_citizens_count)
       }
