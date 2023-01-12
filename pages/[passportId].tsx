@@ -117,7 +117,15 @@ export function NationCredChart({ citizen }: any) {
     })
   }, [])
 
-  return <Chart type='line' ref={chartRef} data={chartData} />
+  const options = {
+    scales: {
+      y: {
+        min: 0
+      }
+    }
+  }
+
+  return <Chart type='line' ref={chartRef} data={chartData} options={options} />
 }
 
 export function SourceCredChart({ citizen }: any) {
@@ -203,7 +211,15 @@ export function SourceCredChart({ citizen }: any) {
     })
   }, [])
 
-  return <Chart type='line' ref={chartRef} data={chartData} />
+  const options = {
+    scales: {
+      y: {
+        min: 0
+      }
+    }
+  }
+
+  return <Chart type='line' ref={chartRef} data={chartData} options={options} />
 }
 
 export function DeworkChart({ citizen }: any) {
@@ -273,7 +289,15 @@ export function DeworkChart({ citizen }: any) {
     })
   }, [])
 
-  return <Chart type='line' ref={chartRef} data={chartData} />
+  const options = {
+    scales: {
+      y: {
+        min: 0
+      }
+    }
+  }
+
+  return <Chart type='line' ref={chartRef} data={chartData} options={options} />
 }
 
 export function VotingPowerChart({ citizen }: any) {
