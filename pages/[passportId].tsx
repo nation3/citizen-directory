@@ -377,7 +377,7 @@ const ProfilePage: NextPage = ({ citizen }: any) => {
 
   return (
     <>
-      <div className="card bg-base-100 mt-4 p-2 md:w-[1000px]">
+      <div className="card bg-base-100 mt-4 p-2 sm:p-4 md:p-8 sm:w-[500px] md:w-[650px] lg:w-[600px] xl:w-[800px] max-w-[350px] sm:max-w-[500px] md:max-w-[650px] lg:max-w-full">
         <div className="flex">
           {citizen.ensName ? (
             <img
@@ -393,7 +393,7 @@ const ProfilePage: NextPage = ({ citizen }: any) => {
           )}
 
           <div className="ml-4 font-semibold">
-            <h1 className="text-4xl mt-2">
+            <h1 className="text-2xl md:text-4xl mt-2">
               {citizen.ensName
                 ? citizen.ensName
                 : `${citizen.ownerAddress.substring(
