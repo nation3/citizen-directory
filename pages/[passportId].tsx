@@ -377,7 +377,7 @@ const ProfilePage: NextPage = ({ citizen }: any) => {
 
   return (
     <>
-      <div className="card bg-base-100 mt-4">
+      <div className="card bg-base-100 mt-4 p-2 md:w-[1000px]">
         <div className="flex">
           {citizen.ensName ? (
             <img
