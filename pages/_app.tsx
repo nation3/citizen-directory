@@ -1,22 +1,13 @@
-import { getDefaultProvider } from "ethers";
-import type { AppProps } from "next/app";
-import { createClient, WagmiConfig } from "wagmi";
-import Nation3Wrapper from "../components/Nation3Wrapper";
+import type { AppProps } from 'next/app'
+import Layout from '../components/Layout'
 import '../styles/globals.css'
-
-const client = createClient({
-  autoConnect: true,
-  provider: getDefaultProvider(),
-});
 
 function Nation3({ Component, pageProps }: AppProps) {
   return (
-    <WagmiConfig client={client}>
-      <Nation3Wrapper>
-        <Component {...pageProps} />
-      </Nation3Wrapper>
-    </WagmiConfig>
-  );
+    <Layout>
+      <Component {...pageProps} />
+    </Layout>
+  )
 }
 
-export default Nation3;
+export default Nation3

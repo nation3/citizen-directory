@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState } from "react"
-import type { NextPage } from "next"
-import Image from "next/image"
+import React, { useEffect, useRef, useState } from 'react'
+import type { NextPage } from 'next'
+import Image from 'next/image'
 import HomeCard from '../components/CitizenCard'
 import flag from '../public/flag.svg'
 import Papa from 'papaparse'
@@ -16,7 +16,7 @@ import {
   Tooltip,
   Legend,
   Filler,
-  ChartData
+  ChartData,
 } from 'chart.js'
 import { Chart } from 'react-chartjs-2'
 ChartJS.register(
@@ -56,7 +56,8 @@ export function CitizenChart() {
     gradientGreen.addColorStop(1, 'rgba(136, 241, 187, 0.3)')
 
     // Fetch NationCred data
-    const nationCredFileUrl: string = 'https://raw.githubusercontent.com/nation3/nationcred-datasets/main/nationcred/output/nationcred-active-citizens.csv'
+    const nationCredFileUrl: string =
+      'https://raw.githubusercontent.com/nation3/nationcred-datasets/main/nationcred/output/nationcred-active-citizens.csv'
     console.info('nationCredFileUrl:', nationCredFileUrl)
     const active_citizens_count: number[] = []
     Papa.parse(nationCredFileUrl, {
@@ -71,11 +72,12 @@ export function CitizenChart() {
           active_citizens_count[i] = Number(row.active_citizens_count) + 2 // TODO: remove ' + 2' when all active citizens have been linked to SourceCred
         })
         console.info('active_citizen_count:', active_citizens_count)
-      }
+      },
     })
 
     // Fetch data from datasets repo
-    const citizenCountFileUrl: string = 'https://raw.githubusercontent.com/nation3/nationcred-datasets/main/data-sources/citizens/output/citizen-count-per-week.csv'
+    const citizenCountFileUrl: string =
+      'https://raw.githubusercontent.com/nation3/nationcred-datasets/main/data-sources/citizens/output/citizen-count-per-week.csv'
     console.info('Fetching citizenCount data:', citizenCountFileUrl)
     Papa.parse(citizenCountFileUrl, {
       download: true,
@@ -94,7 +96,7 @@ export function CitizenChart() {
         })
         console.info('week_end_dates:', week_end_dates)
         console.info('total_citizen_count:', total_citizen_count)
-    
+
         const data = {
           labels: week_end_dates,
           datasets: [
@@ -103,24 +105,24 @@ export function CitizenChart() {
               data: total_citizen_count,
               borderColor: 'rgba(53, 162, 235, 0.4)',
               backgroundColor: gradientBlue,
-              fill: true
+              fill: true,
             },
             {
               label: 'Active Citizens',
               data: active_citizens_count,
               borderColor: 'rgba(136, 241, 187, 1)',
               backgroundColor: gradientGreen,
-              fill: true
-            }
-          ]
+              fill: true,
+            },
+          ],
         }
-    
+
         setChartData(data)
-      }
+      },
     })
   }, [])
 
-  return <Chart type='line' ref={chartRef} data={chartData} />
+  return <Chart type="line" ref={chartRef} data={chartData} />
 }
 
 export function CitizenList() {
@@ -133,7 +135,8 @@ export function CitizenList() {
     console.info('CitizenList useEffect')
 
     // Fetch data from datasets repo
-    const citizenDataFileUrl: string = 'https://raw.githubusercontent.com/nation3/nationcred-datasets/main/data-sources/citizens/output/citizens.csv'
+    const citizenDataFileUrl: string =
+      'https://raw.githubusercontent.com/nation3/nationcred-datasets/main/data-sources/citizens/output/citizens.csv'
     console.info('Fetching citizen data:', citizenDataFileUrl)
     Papa.parse(citizenDataFileUrl, {
       download: true,
@@ -143,24 +146,22 @@ export function CitizenList() {
       complete: (result: any) => {
         console.info('Fetching citizen data complete')
         setData(result.data)
-      }
+      },
     })
   }, [])
-  
+
   return (
     <>
       <div className="grid xl:grid-cols-2 mt-2 gap-8">
-        {
-          citizenData.map((citizen: any) => (
-            <HomeCard
-              key={citizen.passport_id}
-              passportId={citizen.passport_id}
-              ethAddress={citizen.owner_address}
-              ensName={citizen.ens_name}
-              votingPower={citizen.voting_power}
-            />
-          ))
-        }
+        {citizenData.map((citizen: any) => (
+          <HomeCard
+            key={citizen.passport_id}
+            passportId={citizen.passport_id}
+            ethAddress={citizen.owner_address}
+            ensName={citizen.ens_name}
+            votingPower={citizen.voting_power}
+          />
+        ))}
       </div>
     </>
   )
@@ -179,9 +180,7 @@ const HomePage: NextPage = () => {
 
         <CitizenChart />
 
-        <p className="mb-8 mt-8">
-          Get to know your fellow citizens:
-        </p>
+        <p className="mb-8 mt-8">Get to know your fellow citizens:</p>
 
         <CitizenList />
       </div>

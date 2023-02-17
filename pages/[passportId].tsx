@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from "react"
-import { NextPage } from "next"
-import Image from "next/image"
+import { useEffect, useRef, useState } from 'react'
+import { NextPage } from 'next'
+import Image from 'next/image'
 import dework from '../public/dework.svg'
 
 // @ts-expect-error
@@ -19,7 +19,7 @@ import {
   Tooltip,
   Legend,
   Filler,
-  ChartData
+  ChartData,
 } from 'chart.js'
 import { Chart } from 'react-chartjs-2'
 ChartJS.register(
@@ -83,7 +83,7 @@ export function NationCredChart({ citizen }: any) {
         console.info('nationcred_scores:', nationcred_scores)
         console.info('governance_hours:', governance_hours)
         console.info('operations_hours:', operations_hours)
-    
+
         const data = {
           labels: week_ends,
           datasets: [
@@ -92,40 +92,40 @@ export function NationCredChart({ citizen }: any) {
               data: value_creation_hours,
               borderColor: 'rgba(56, 195, 255, 0.4)',
               backgroundColor: colorGradient,
-              fill: true
+              fill: true,
             },
             {
               label: 'Governance Hour',
               data: governance_hours,
-              borderColor: 'rgba(19, 116, 138, 0.2)'
+              borderColor: 'rgba(19, 116, 138, 0.2)',
             },
             {
               label: 'Operations Hour',
               data: operations_hours,
-              borderColor: 'rgba(132, 116, 138, 0.2)'
+              borderColor: 'rgba(132, 116, 138, 0.2)',
             },
             {
               label: 'Nationcred Score',
               data: nationcred_scores,
-              borderColor: 'rgba(152, 247, 44, 0.2)'
-            }
-          ]
+              borderColor: 'rgba(152, 247, 44, 0.2)',
+            },
+          ],
         }
-    
+
         setChartData(data)
-      }
+      },
     })
   }, [])
 
   const options = {
     scales: {
       y: {
-        min: 0
-      }
-    }
+        min: 0,
+      },
+    },
   }
 
-  return <Chart type='line' ref={chartRef} data={chartData} options={options} />
+  return <Chart type="line" ref={chartRef} data={chartData} options={options} />
 }
 
 export function SourceCredChart({ citizen }: any) {
@@ -177,7 +177,7 @@ export function SourceCredChart({ citizen }: any) {
         console.info('discord_scores:', discord_scores)
         console.info('discourse_scores:', discourse_scores)
         console.info('github_scores:', github_scores)
-    
+
         const data = {
           labels: week_ends,
           datasets: [
@@ -186,40 +186,40 @@ export function SourceCredChart({ citizen }: any) {
               data: sourcecred_scores,
               borderColor: 'rgba(213, 163, 152, 0.4)',
               backgroundColor: colorGradient,
-              fill: true
+              fill: true,
             },
             {
               label: 'Discord score',
               data: discord_scores,
-              borderColor: 'rgba(132, 116, 138, 0.2)'
+              borderColor: 'rgba(132, 116, 138, 0.2)',
             },
             {
               label: 'Discourse score',
               data: discourse_scores,
-              borderColor: 'rgba(132, 116, 138, 0.4)'
+              borderColor: 'rgba(132, 116, 138, 0.4)',
             },
             {
               label: 'GitHub score',
               data: github_scores,
-              borderColor: 'rgba(132, 116, 138, 0.8)'
-            }
-          ]
+              borderColor: 'rgba(132, 116, 138, 0.8)',
+            },
+          ],
         }
-    
+
         setChartData(data)
-      }
+      },
     })
   }, [])
 
   const options = {
     scales: {
       y: {
-        min: 0
-      }
-    }
+        min: 0,
+      },
+    },
   }
 
-  return <Chart type='line' ref={chartRef} data={chartData} options={options} />
+  return <Chart type="line" ref={chartRef} data={chartData} options={options} />
 }
 
 export function DeworkChart({ citizen }: any) {
@@ -265,7 +265,7 @@ export function DeworkChart({ citizen }: any) {
         console.info('week_ends:', week_ends)
         console.info('tasks_completed:', tasks_completed)
         console.info('task_points:', task_points)
-    
+
         const data = {
           labels: week_ends,
           datasets: [
@@ -274,30 +274,30 @@ export function DeworkChart({ citizen }: any) {
               data: tasks_completed,
               borderColor: 'rgba(231, 88, 143, 0.4)',
               backgroundColor: colorGradient,
-              fill: true
+              fill: true,
             },
             {
               label: 'Task points ',
               data: task_points,
-              borderColor: 'rgba(133, 114, 217, 0.4)'
-            }
-          ]
+              borderColor: 'rgba(133, 114, 217, 0.4)',
+            },
+          ],
         }
-    
+
         setChartData(data)
-      }
+      },
     })
   }, [])
 
   const options = {
     scales: {
       y: {
-        min: 0
-      }
-    }
+        min: 0,
+      },
+    },
   }
 
-  return <Chart type='line' ref={chartRef} data={chartData} options={options} />
+  return <Chart type="line" ref={chartRef} data={chartData} options={options} />
 }
 
 export function VotingPowerChart({ citizen }: any) {
@@ -340,7 +340,7 @@ export function VotingPowerChart({ citizen }: any) {
         })
         console.info('week_ends:', week_ends)
         console.info('voting_power:', voting_power)
-    
+
         const data = {
           labels: week_ends,
           datasets: [
@@ -349,25 +349,25 @@ export function VotingPowerChart({ citizen }: any) {
               data: voting_power,
               borderColor: 'rgba(53, 162, 235, 0.4)',
               backgroundColor: colorGradient,
-              fill: true
-            }
-          ]
+              fill: true,
+            },
+          ],
         }
-    
+
         setChartData(data)
-      }
+      },
     })
   }, [])
 
   const options = {
     scales: {
       y: {
-        min: 0
-      }
-    }
+        min: 0,
+      },
+    },
   }
 
-  return <Chart type='line' ref={chartRef} data={chartData} options={options} />
+  return <Chart type="line" ref={chartRef} data={chartData} options={options} />
 }
 
 const ProfilePage: NextPage = ({ citizen }: any) => {
@@ -377,57 +377,65 @@ const ProfilePage: NextPage = ({ citizen }: any) => {
 
   return (
     <>
-      <div className="flex">
-        {citizen.ensName ? (
-          <img className="mask mask-circle h-24 w-24" src={`https://cdn.stamp.fyi/avatar/eth:${citizen.ownerAddress}?s=144`} />
-        ) : (
-          <Blockies className="mask mask-circle" seed={citizen.ownerAddress} size={24} />
-        )}
+      <div className="card bg-base-100 mt-4 p-2 sm:p-4 md:p-8 sm:w-[500px] md:w-[650px] lg:w-[600px] xl:w-[800px] max-w-[350px] sm:max-w-[500px] md:max-w-[650px] lg:max-w-full">
+        <div className="flex">
+          {citizen.ensName ? (
+            <img
+              className="mask mask-circle h-24 w-24"
+              src={`https://cdn.stamp.fyi/avatar/eth:${citizen.ownerAddress}?s=144`}
+            />
+          ) : (
+            <Blockies
+              className="mask mask-circle"
+              seed={citizen.ownerAddress}
+              size={24}
+            />
+          )}
 
-        <div className="ml-4 font-semibold">
-          <h1 className="text-4xl mt-2">
-            {citizen.ensName ? citizen.ensName : `${citizen.ownerAddress.substring(0, 6)}...${citizen.ownerAddress.slice(-4)}`}
-          </h1>
-          <h2 className="text-2xl text-gray-400 mt-2">
-            Citizen #{citizen.passportId}
-          </h2>
+          <div className="ml-4 font-semibold">
+            <h1 className="text-2xl md:text-4xl mt-2">
+              {citizen.ensName
+                ? citizen.ensName
+                : `${citizen.ownerAddress.substring(
+                    0,
+                    6
+                  )}...${citizen.ownerAddress.slice(-4)}`}
+            </h1>
+            <h2 className="text-2xl text-gray-400 mt-2">
+              Citizen #{citizen.passportId}
+            </h2>
+          </div>
         </div>
-      </div>
 
-      <div className="card bg-base-100 mt-4">
         <div className="card-body">
-          <button className="btn btn-disabled bg-transparent loading">Loading profile...</button>
+          <button className="btn btn-disabled bg-transparent loading">
+            Loading profile...
+          </button>
         </div>
-      </div>
+        <h2 className="text-2xl mt-8">📜 NationCred</h2>
 
-      <h2 className="text-2xl mt-8">📜 NationCred</h2>
-      
-      <div className="card bg-base-100 mt-4">
         <div className="card-body">
           <NationCredChart citizen={citizen} />
         </div>
-      </div>
 
-      <h2 className="text-2xl mt-8">🎗️ SourceCred</h2>
+        <h2 className="text-2xl mt-8">🎗️ SourceCred</h2>
 
-      <div className="card bg-base-100 mt-4">
         <div className="card-body">
           <SourceCredChart citizen={citizen} />
         </div>
-      </div>
 
-      <h2 className="text-2xl mt-8"><Image src={dework} width={22} height={22} /> Dework</h2>
-      
-      <div className="card bg-base-100 mt-4">
+        <h2 className="text-2xl mt-8">
+          <Image src={dework} width={22} height={22} /> Dework
+        </h2>
+
         <div className="card-body">
           <DeworkChart citizen={citizen} />
         </div>
-      </div>
 
-      <h2 className="text-2xl mt-8">🗳️ Voting Power</h2>
+        <h2 className="text-2xl mt-8">🗳️ Voting Power</h2>
 
-      <p className="mt-4">Voting power: {citizen.votingPower.toFixed(2)}</p>
-      <div className="card bg-base-100 mt-4">
+        <p className="mt-4">Voting power: {citizen.votingPower.toFixed(2)}</p>
+
         <div className="card-body">
           <VotingPowerChart citizen={citizen} />
         </div>
@@ -446,7 +454,7 @@ export async function getStaticPaths() {
       // { params: { passportId: '0' } },
       // { params: { passportId: '1' } }
     ],
-    fallback: 'blocking'
+    fallback: 'blocking',
   }
 }
 
@@ -458,18 +466,19 @@ export async function getStaticProps(context: any) {
   const passportId: string = context.params.passportId
   console.info('passportId:', passportId)
 
-  const citizensJsonUrl: string = 'https://raw.githubusercontent.com/nation3/nationcred-datasets/main/data-sources/citizens/output/citizens.json'
+  const citizensJsonUrl: string =
+    'https://raw.githubusercontent.com/nation3/nationcred-datasets/main/data-sources/citizens/output/citizens.json'
   console.info('Fetching Citizen data:', citizensJsonUrl)
   const response = await fetch(citizensJsonUrl)
   const citizens = await response.json()
-  
+
   const citizen = citizens[passportId]
   console.info('citizen:', citizen)
 
   return {
     props: {
-      citizen: citizen
-    }
+      citizen: citizen,
+    },
   }
 }
 
