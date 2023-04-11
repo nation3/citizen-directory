@@ -4,24 +4,30 @@
 
 :root {
   --foreground-rgb: 34, 64, 89;
-  --background-start-rgb: 105, 201, 255;
-  --background-end-rgb: 136, 241, 187;
+  --background-start-rgb: 244, 250, 255;
+  --background-end-rgb: 244, 250, 255;
+  --navbar-background-rgb: 255, 255, 255;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --foreground-rgb: 255, 255, 255;
+    --foreground-rgb: 177, 196, 216;
     --background-start-rgb: 0, 0, 0;
     --background-end-rgb: 0, 0, 0;
+    --navbar-background-rgb: 16, 23, 41;
   }
 }
 
 body {
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(
-      to right,
+      to bottom,
       transparent,
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
+}
+
+#navBar {
+  background: rgb(var(--navbar-background-rgb));
 }
