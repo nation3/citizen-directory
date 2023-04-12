@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import flag from '../../public/flag.svg'
 
 export default function Home() {
   return (
@@ -8,8 +9,9 @@ export default function Home() {
       </div>
 
       <div className='p-8'>
-        <h1 className="text-3xl font-medium">
-          Nation3 Citizens
+        <h1 className="text-3xl font-medium flex">
+          Nation3 Citizens&nbsp;
+          <Image src={flag} width={36} height={36} alt='Nation3 Flag' />
         </h1>
 
         <div className='mt-4'>
