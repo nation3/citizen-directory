@@ -28,6 +28,6 @@ body {
     rgb(var(--background-start-rgb));
 }
 
-#navBar {
+#menu {
   background: rgb(var(--navbar-background-rgb));
 }
