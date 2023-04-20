@@ -124,6 +124,11 @@ function CitizenChart() {
     options: {
       dataLabels: {
         enabled: false
+      },
+      chart: {
+        toolbar: {
+          show: false
+        }
       }
     }
   }
