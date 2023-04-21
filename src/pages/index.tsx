@@ -9,7 +9,6 @@ const Chart = dynamic(() => import('react-apexcharts'), { ssr: false })
 
 // @ts-expect-error
 import Blockies from 'react-blockies'
-import { ethers } from 'ethers'
 
 export default function Home() {
   return (
@@ -34,7 +33,7 @@ export default function Home() {
             </Link>
           </li>
           <li className='mt-4'>
-            <Link href={'/'} className='flex bg-sky-300 hover:bg-sky-300 rounded-lg p-4 text-white'>
+            <Link href={'/'} className='flex bg-slate-400 rounded-lg p-4 text-white'>
               <UsersIcon className="h-5 w-5" />&nbsp;
               Citizen directory&nbsp;
               <ChevronRightIcon className='h-5 w-5 opacity-50' />
@@ -80,7 +79,7 @@ export default function Home() {
                   { false ? (
                     <img
                       className="rounded-full h-12 w-12"
-                      src={`https://cdn.stamp.fyi/avatar/eth:${ethers.constants.AddressZero}?s=144`}
+                      src={`https://cdn.stamp.fyi/avatar/eth:0x000000000000000000000000000000000000000000?s=144`}
                     />
                   ) : (
                     <Blockies
@@ -94,7 +93,7 @@ export default function Home() {
                     {/* {ensName
                       ? ensName
                       : `${ethAddress.substring(0, 6)}...${ethAddress.slice(-4)}`} */}
-                      {ethers.constants.AddressZero.substring(0, 6)}...{ethers.constants.AddressZero.slice(-4)}
+                      0x0000...0000
                   </h2>
                 </div>
                 🎗️ NationCred: ???
