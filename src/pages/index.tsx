@@ -15,7 +15,7 @@ export default function Home() {
     <main className='flex'>
       <div id='menu' className='w-1/5 p-4 xl:rounded-t-3xl xl:mt-8 xl:ml-8'>
         <Link href={'/'}>
-          <Image src={logo} width={130} height={100} alt='Nation3 Logo' className='m-4' />
+          <Image src={logo} width={130} height={51} alt='Nation3 Logo' className='m-4' />
         </Link>
         <ul>
           <li className='mt-4'>
@@ -66,7 +66,7 @@ export default function Home() {
           <CitizenChart />
         </div>
 
-        <div className='mt-4 grid gap-4 md:grid-cols-2 xl:grid-cols-3'>
+        <div className='mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-3'>
           {[...Array(264)].map((x, passportId) =>
             <div key={passportId} className='bg-white rounded-xl p-4 drop-shadow-sm transition ease-in-out hover:-translate-y-0.5'>
               <div className="card-body items-stretch ">
