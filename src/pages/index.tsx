@@ -10,7 +10,9 @@ const Chart = dynamic(() => import('react-apexcharts'), { ssr: false })
 // @ts-expect-error
 import Blockies from 'react-blockies'
 
-export default function Home({ citizens }: any) {
+import Papa from 'papaparse'
+
+export default function Home({ total_citizens_count, active_citizens_count, citizens }: any) {
   console.log('Home')
   return (
     <main className='flex'>
@@ -20,14 +22,14 @@ export default function Home({ citizens }: any) {
         </Link>
         <ul>
           <li className='mt-4'>
-            <Link href='https://app.nation3.org' className='flex bg-slate-50 hover:bg-slate-100 rounded-lg p-4'>
+            <Link href='https://app.nation3.org' className='flex bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg p-4'>
               <Squares2X2Icon className="h-5 w-5" />&nbsp;
               Start&nbsp;
               <ChevronRightIcon className='h-5 w-5 opacity-50' />
             </Link>
           </li>
           <li className='mt-4'>
-            <Link href='https://app.nation3.org/join' className='flex bg-slate-50 hover:bg-slate-100 rounded-lg p-4'>
+            <Link href='https://app.nation3.org/join' className='flex bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg p-4'>
               <UserPlusIcon className="h-5 w-5" />&nbsp;
               Become a citizen&nbsp;
               <ChevronRightIcon className='h-5 w-5 opacity-50' />
@@ -41,14 +43,14 @@ export default function Home({ citizens }: any) {
             </Link>
           </li>
           <li className='mt-4'>
-            <Link href='https://app.nation3.org/lock' className='flex bg-slate-50 hover:bg-slate-100 rounded-lg p-4'>
+            <Link href='https://app.nation3.org/lock' className='flex bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg p-4'>
               <LockClosedIcon className="h-5 w-5" />&nbsp;
               Lock tokens&nbsp;
               <ChevronRightIcon className='h-5 w-5 opacity-50' />
             </Link>
           </li>
           <li className='mt-4'>
-            <Link href='https://app.nation3.org/liquidity' className='flex bg-slate-50 hover:bg-slate-100 rounded-lg p-4'>
+            <Link href='https://app.nation3.org/liquidity' className='flex bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg p-4'>
               <CurrencyDollarIcon className="h-5 w-5" />&nbsp;
               Liquidity rewards&nbsp;
               <ChevronRightIcon className='h-5 w-5 opacity-50' />
@@ -63,9 +65,9 @@ export default function Home({ citizens }: any) {
           <Image src={flag} width={36} height={36} alt='Nation3 Flag' />
         </h1>
 
-        <div className='mt-4 w-full h-64'>
+        <div className='mt-4 w-full h-64 dark:bg-slate-800 dark:rounded-xl'>
           {citizens ? (
-            <CitizenChart />
+            <CitizenChart total_citizens_count={total_citizens_count} active_citizens_count={active_citizens_count} />
           ) : (
             <div role="status">
               <svg aria-hidden="true" className="w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-sky-200 fill-sky-200" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -79,7 +81,7 @@ export default function Home({ citizens }: any) {
         <div className='mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-3'>
           {citizens ? (
             Object.keys(citizens).map((passportId) => (
-              <div key={passportId} className='bg-white rounded-xl p-4 drop-shadow-sm transition ease-in-out hover:-translate-y-0.5'>
+              <div key={passportId} className='bg-white dark:bg-slate-800 rounded-xl p-4 drop-shadow-sm transition ease-in-out hover:-translate-y-0.5'>
                 <div className="card-body items-stretch ">
                   <div className="absolute right-4">
                     <IdentificationIcon className="h-5 w-5 text-gray-400" />
@@ -99,15 +101,17 @@ export default function Home({ citizens }: any) {
                       />
                     )}
 
-                    <h2 className="ml-4 text-2xl text-ellipsis overflow-hidden">
+                    <h2 className="ml-2 mt-1.5 text-2xl text-ellipsis overflow-hidden">
                       {citizens[passportId].ensName
                         ? citizens[passportId].ensName
                         : `${citizens[passportId].ownerAddress.substring(0, 6)}...${citizens[passportId].ownerAddress.slice(-4)}`}
                     </h2>
                   </div>
-                  🎗️ NationCred: ???
-                  <br />
-                  🗳️ Voting power: {citizens[passportId].votingPower}
+                  <div className='mt-2'>
+                    🎗️ NationCred: ???
+                    <br />
+                    🗳️ Voting power: {citizens[passportId].votingPower}
+                  </div>
                 </div>
               </div>
             ))
@@ -125,16 +129,16 @@ export default function Home({ citizens }: any) {
   )
 }
 
-function CitizenChart() {
+function CitizenChart({ total_citizens_count, active_citizens_count }: any) {
   const chartData = {
     series: [
       {
         name: 'Total Citizens',
-        data: [31, 40, 28, 51, 42, 109, 100]
+        data: total_citizens_count
       },
       {
         name: 'Active Citizens',
-        data: [11, 32, 45, 32, 34, 52, 41]
+        data: active_citizens_count
       }
     ],
     options: {
@@ -156,20 +160,63 @@ function CitizenChart() {
 export async function getStaticProps() {
   console.log('getStaticProps')
 
-  let citizens = null
+  // Fetch NationCred data from datasets repo
+  const nationCredFileUrl: string = 'https://raw.githubusercontent.com/nation3/nationcred-datasets/main/nationcred/output/nationcred-active-citizens.csv'
+  console.info('Fetching NationCred data:', nationCredFileUrl)
+  const nationCredResponse = await fetch(nationCredFileUrl)
+  console.log('nationCredResponse.status:', nationCredResponse.status)
+  const nationCredData = await nationCredResponse.text()
+  const active_citizens_count: number[] = []
+  Papa.parse(nationCredData, {
+    header: true,
+    skipEmptyLines: true,
+    dynamicTyping: true,
+    complete: (result: any) => {
+      console.info('result:', result)
+      result.data.forEach((row: any, i: number) => {
+        console.info(`row ${i}`, row)
+        active_citizens_count[i] = Number(row.active_citizens_count)
+      })
+      console.info('active_citizen_count:', active_citizens_count)
+    }
+  })
 
-  // Fetch data from datasets repo
+  // Fetch weekly citizen count data from datasets repo
+  const citizenCountFileUrl: string = 'https://raw.githubusercontent.com/nation3/nationcred-datasets/main/data-sources/citizens/output/citizen-count-per-week.csv'
+  console.info('Fetching citizen count data:', citizenCountFileUrl)
+  const citizenCountResponse = await fetch(citizenCountFileUrl)
+  console.log('citizenCountResponse.status:', citizenCountResponse.status)
+  const citizenCountData = await citizenCountResponse.text()
+  const total_citizens_count: number[] = []
+  Papa.parse(citizenCountData, {
+    header: true,
+    skipEmptyLines: true,
+    dynamicTyping: true,
+    complete: (result: any) => {
+      console.info('result:', result)
+      result.data.forEach((row: any, i: number) => {
+        console.info(`row ${i}`, row)
+        total_citizens_count[i] = Number(row.total_citizens)
+      })
+      console.info('total_citizens_count:', total_citizens_count)
+    }
+  })
+
+  // Fetch citizen data from datasets repo
+  let citizens = null
   const citizenDataFileUrl: string = 'https://raw.githubusercontent.com/nation3/nationcred-datasets/main/data-sources/citizens/output/citizens.json'
   console.info('Fetching citizen data:', citizenDataFileUrl)
   const response = await fetch(citizenDataFileUrl)
   console.log('response.status:', response.status)
   citizens = await response.json()
-  for (const passportId in citizens) {
-    console.log('passportId:', passportId)
-  }
+  // for (const passportId in citizens) {
+  //   console.log('passportId:', passportId)
+  // }
 
   return {
     props: {
+      total_citizens_count,
+      active_citizens_count,
       citizens
     },
     revalidate: 10  // In seconds
