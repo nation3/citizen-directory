@@ -78,7 +78,7 @@ export default function Home({ citizens }: any) {
 
         <div className='mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-3'>
           {citizens ? (
-            [...Array(264)].map((x, passportId) =>
+            Object.keys(citizens).map((passportId) => (
               <div key={passportId} className='bg-white rounded-xl p-4 drop-shadow-sm transition ease-in-out hover:-translate-y-0.5'>
                 <div className="card-body items-stretch ">
                   <div className="absolute right-4">
@@ -86,11 +86,10 @@ export default function Home({ citizens }: any) {
                     <p className="text-gray-400">#{passportId}</p>
                   </div>
                   <div className="flex">
-                    {/* {ensName ? ( */}
-                    { false ? (
+                    {citizens[passportId].ensName ? (
                       <img
                         className="rounded-full h-12 w-12"
-                        src={`https://cdn.stamp.fyi/avatar/eth:0x000000000000000000000000000000000000000000?s=144`}
+                        src={`https://cdn.stamp.fyi/avatar/eth:${citizens[passportId].ownerAddress}?s=144`}
                       />
                     ) : (
                       <Blockies
@@ -100,19 +99,18 @@ export default function Home({ citizens }: any) {
                       />
                     )}
 
-                    <h2 className="ml-4 font-medium">
-                      {/* {ensName
-                        ? ensName
-                        : `${ethAddress.substring(0, 6)}...${ethAddress.slice(-4)}`} */}
-                        0x0000...0000
+                    <h2 className="ml-4 text-2xl text-ellipsis overflow-hidden">
+                      {citizens[passportId].ensName
+                        ? citizens[passportId].ensName
+                        : `${citizens[passportId].ownerAddress.substring(0, 6)}...${citizens[passportId].ownerAddress.slice(-4)}`}
                     </h2>
                   </div>
                   🎗️ NationCred: ???
                   <br />
-                  🗳️ Voting power: ???
+                  🗳️ Voting power: {citizens[passportId].votingPower}
                 </div>
               </div>
-            )
+            ))
           ) : (
             <div role="status">
               <svg aria-hidden="true" className="w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-sky-200 fill-sky-200" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -157,11 +155,23 @@ function CitizenChart() {
 
 export async function getStaticProps() {
   console.log('getStaticProps')
-  const citizens = null
+
+  let citizens = null
+
+  // Fetch data from datasets repo
+  const citizenDataFileUrl: string = 'https://raw.githubusercontent.com/nation3/nationcred-datasets/main/data-sources/citizens/output/citizens.json'
+  console.info('Fetching citizen data:', citizenDataFileUrl)
+  const response = await fetch(citizenDataFileUrl)
+  console.log('response.status:', response.status)
+  citizens = await response.json()
+  for (const passportId in citizens) {
+    console.log('passportId:', passportId)
+  }
+
   return {
     props: {
       citizens
     },
-    revalidate: 60  // In seconds
+    revalidate: 10  // In seconds
   }
 }
