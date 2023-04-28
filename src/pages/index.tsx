@@ -60,7 +60,7 @@ export default function Home({ total_citizens_count, active_citizens_count, citi
       </div>
 
       <div className='w-4/5 p-8'>
-        <h1 className="text-3xl font-medium flex">
+        <h1 className="text-3xl font-bold flex">
           Nation3 Citizens&nbsp;
           <Image src={flag} width={36} height={36} alt='Nation3 Flag' />
         </h1>
@@ -82,7 +82,7 @@ export default function Home({ total_citizens_count, active_citizens_count, citi
           {citizens ? (
             Object.keys(citizens).map((passportId) => (
               <div key={passportId} className='bg-white dark:bg-slate-800 rounded-xl p-4 drop-shadow-sm transition ease-in-out hover:-translate-y-0.5'>
-                <div className="card-body items-stretch ">
+                <div className="card-body items-stretch">
                   <div className="absolute right-4">
                     <IdentificationIcon className="h-5 w-5 text-gray-400" />
                     <p className="text-gray-400">#{passportId}</p>
@@ -101,7 +101,7 @@ export default function Home({ total_citizens_count, active_citizens_count, citi
                       />
                     )}
 
-                    <h2 className="ml-2 mt-1.5 text-2xl text-ellipsis overflow-hidden">
+                    <h2 className="ml-2 mt-2 text-xl text-ellipsis overflow-hidden">
                       {citizens[passportId].ensName
                         ? citizens[passportId].ensName
                         : `${citizens[passportId].ownerAddress.substring(0, 6)}...${citizens[passportId].ownerAddress.slice(-4)}`}
