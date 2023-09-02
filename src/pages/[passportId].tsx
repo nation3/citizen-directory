@@ -99,7 +99,7 @@ export default function ProfilePage({ citizen, nationCred }: any) {
 
           <div className='mt-8'>
             <h2 className="text-2xl flex">
-              <Image alt='SourceCred' src={sourcecred} width={22} height={22} />&nbsp;SourceCred
+              <Image alt='SourceCred' src={sourcecred} width={32} height={22} />&nbsp;SourceCred
             </h2>
             <div className='mt-2 bg-white dark:bg-slate-800 rounded-lg p-4 drop-shadow-sm'>
               {router.isFallback ? (
@@ -112,7 +112,7 @@ export default function ProfilePage({ citizen, nationCred }: any) {
 
           <div className='mt-8'>
             <h2 className="text-2xl flex">
-              <Image alt='Dework' src={dework} width={22} height={22} />&nbsp;Dework
+              <Image alt='Dework' src={dework} width={32} height={22} />&nbsp;Dework
             </h2>
             <div className='mt-2 bg-white dark:bg-slate-800 rounded-lg p-4 drop-shadow-sm'>
               {router.isFallback ? (
@@ -144,19 +144,19 @@ export function NationCredChart({ nationCred }: any) {
   const chartData = {
     series: [
       {
-        name: 'Total Score',
+        name: 'NationCred score',
         data: nationCred.scores
       },
       {
-        name: 'Value Creation Score',
+        name: 'Value creation score',
         data: nationCred.valueCreationScores
       },
       {
-        name: 'Governance Score',
+        name: 'Governance score',
         data: nationCred.governanceScores
       },
       {
-        name: 'Operations Score',
+        name: 'Operations score',
         data: nationCred.operationsScores
       }
     ],
