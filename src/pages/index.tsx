@@ -13,7 +13,7 @@ import Menu from '@/components/Menu'
 import Link from 'next/link'
 import LoadingIndicator from '@/components/LoadingIndicator'
 
-export default function Home({ total_citizens_count, active_citizens_count, citizens }: any) {
+export default function Home({ total_citizens_count, total_expired_passports, active_citizens_count, citizens }: any) {
   console.log('Home')
   return (
     <main className='flex'>
@@ -27,7 +27,7 @@ export default function Home({ total_citizens_count, active_citizens_count, citi
 
         <div className='mt-4 w-full h-64 dark:bg-slate-800 dark:rounded-xl'>
           {(total_citizens_count && active_citizens_count) ? (
-            <CitizenChart total_citizens_count={total_citizens_count} active_citizens_count={active_citizens_count} />
+            <CitizenChart total_citizens_count={total_citizens_count} total_expired_passports={total_expired_passports} active_citizens_count={active_citizens_count} />
           ) : (
             <LoadingIndicator />
           )}
@@ -81,7 +81,7 @@ export default function Home({ total_citizens_count, active_citizens_count, citi
   )
 }
 
-function CitizenChart({ total_citizens_count, active_citizens_count }: any) {
+function CitizenChart({ total_citizens_count, total_expired_passports, active_citizens_count }: any) {
   const chartData = {
     series: [
       {
@@ -91,6 +91,10 @@ function CitizenChart({ total_citizens_count, active_citizens_count }: any) {
       {
         name: 'Active Citizens',
         data: active_citizens_count,
+      },
+      {
+        name: 'Expired Passports',
+        data: total_expired_passports
       }
     ],
     options: {
@@ -140,6 +144,7 @@ export async function getStaticProps() {
   console.log('citizenCountResponse.status:', citizenCountResponse.status)
   const citizenCountData = await citizenCountResponse.text()
   const total_citizens_count: number[] = []
+  const total_expired_passports: number[] = []
   Papa.parse(citizenCountData, {
     header: true,
     skipEmptyLines: true,
@@ -149,8 +154,10 @@ export async function getStaticProps() {
       result.data.forEach((row: any, i: number) => {
         console.info(`row ${i}`, row)
         total_citizens_count[i] = Number(row.total_citizens)
+        total_expired_passports[i] = Number(row.total_expired_passports)
       })
       console.info('total_citizens_count:', total_citizens_count)
+      console.info('total_expired_passports:', total_expired_passports)
     }
   })
 
@@ -165,6 +172,7 @@ export async function getStaticProps() {
   return {
     props: {
       total_citizens_count,
+      total_expired_passports,
       active_citizens_count,
       citizens
     },
