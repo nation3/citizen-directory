@@ -5,8 +5,8 @@ A directory of Nation3 Citizens and their profiles
 ## Build
 
 ```
-yarn install
-yarn lint
-yarn build
-yarn dev
+npm install
+npm run lint
+npm run build
+npm run dev
 ```
