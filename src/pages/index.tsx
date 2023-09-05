@@ -35,7 +35,7 @@ export default function Home({ total_citizens_count, total_expired_passports, ac
 
         <div className='mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-3'>
           {citizens ? (
-            Object.keys(citizens).map((passportId) => (
+            Object.keys(citizens).reverse().map((passportId) => (
               <Link key={passportId} href={`/${passportId}`}>
                 <div className='bg-white dark:bg-slate-800 rounded-xl p-4 drop-shadow-sm transition ease-in-out hover:-translate-y-0.5'>
                   <div className="card-body items-stretch">
