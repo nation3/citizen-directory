@@ -16,10 +16,10 @@ import LoadingIndicator from '@/components/LoadingIndicator'
 export default function Home({ total_citizens_count, total_expired_passports, active_citizens_count, citizens }: any) {
   console.log('Home')
   return (
-    <main className='flex'>
+    <main className='flex-column lg:flex'>
       <Menu />
 
-      <div className='w-4/5 p-8'>
+      <div className='w-full lg:w-3/4 p-8'>
         <h1 className="text-3xl font-bold flex">
           Nation3 Citizens&nbsp;
           <Image src={flag} width={36} height={36} alt='Nation3 Flag' />

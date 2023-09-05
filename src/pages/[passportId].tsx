@@ -20,9 +20,10 @@ export default function ProfilePage({ citizen, nationCred }: any) {
 
   return (
     <>
-      <main className='flex'>
+      <main className='flex-column lg:flex'>
         <Menu />
-        <div className='w-4/5 p-8'>
+        
+        <div className='w-full lg:w-3/4 p-8'>
           <div className="flex">
             {router.isFallback ? (
               <LoadingIndicator />

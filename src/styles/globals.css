@@ -28,6 +28,7 @@ body {
     rgb(var(--background-start-rgb));
 }
 
-#menu {
+#menu-medium,
+#menu-large {
   background: rgb(var(--menu-background-rgb));
 }
