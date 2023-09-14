@@ -13,7 +13,7 @@ import Papa from 'papaparse'
 import dynamic from 'next/dynamic'
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false })
 
-export default function ProfilePage({ citizen, nationCred }: any) {
+export default function ProfilePage({ citizen, nationCred, veNation }: any) {
   console.log('ProfilePage')
 
   const router = useRouter()
@@ -102,7 +102,7 @@ export default function ProfilePage({ citizen, nationCred }: any) {
             <h2 className="text-2xl flex">
               <Image alt='SourceCred' src={sourcecred} width={32} height={22} />&nbsp;SourceCred
             </h2>
-            <div className='mt-2 bg-white dark:bg-slate-800 rounded-lg p-4 drop-shadow-sm'>
+            <div className='mt-2 h-64 bg-white dark:bg-slate-800 rounded-lg p-4 drop-shadow-sm'>
               {router.isFallback ? (
                 <LoadingIndicator />
               ) : (
@@ -115,7 +115,7 @@ export default function ProfilePage({ citizen, nationCred }: any) {
             <h2 className="text-2xl flex">
               <Image alt='Dework' src={dework} width={32} height={22} />&nbsp;Dework
             </h2>
-            <div className='mt-2 bg-white dark:bg-slate-800 rounded-lg p-4 drop-shadow-sm'>
+            <div className='mt-2 h-64 bg-white dark:bg-slate-800 rounded-lg p-4 drop-shadow-sm'>
               {router.isFallback ? (
                 <LoadingIndicator />
               ) : (
@@ -126,11 +126,11 @@ export default function ProfilePage({ citizen, nationCred }: any) {
 
           <div className='mt-8'>
             <h2 className="text-2xl">🗳️ Voting Power</h2>
-            <div className='mt-2 bg-white dark:bg-slate-800 rounded-lg p-4 drop-shadow-sm'>
+            <div className='mt-2 h-64 bg-white dark:bg-slate-800 rounded-lg p-4 drop-shadow-sm'>
               {router.isFallback ? (
                 <LoadingIndicator />
               ) : (
-                <VotingPowerChart />
+                <VotingPowerChart veNation={veNation} />
               )}
             </div>
           </div>
@@ -196,12 +196,29 @@ export function DeworkChart({ citizen }: any) {
   )
 }
 
-export function VotingPowerChart({ citizen }: any) {
+export function VotingPowerChart({ citizen, veNation }: any) {
   console.info('VotingPowerChart')
+  const chartData = {
+    series: [
+      {
+        name: 'Voting power',
+        data: veNation.voting_power_per_week
+      }
+    ],
+    options: {
+      colors: ['#88f1bb'],
+      dataLabels: {
+        enabled: false
+      },
+      chart: {
+        toolbar: {
+          show: false
+        }
+      }
+    }
+  }
   return (
-    <>
-      VotingPowerChart
-    </>
+    <Chart options={chartData.options} series={chartData.series} type="area" height="100%" />
   )
 }
 
@@ -263,6 +280,27 @@ export async function getStaticProps(context: any) {
     }
   })
 
+  // Fetch $veNATION data from datasets repo
+  const veNationFileUrl: string = `https://raw.githubusercontent.com/nation3/nationcred-datasets/main/data-sources/citizens/output/citizen-${citizen.passportId}.csv`
+  console.info('Fetching $veNATION data:', veNationFileUrl)
+  const veNationResponse = await fetch(veNationFileUrl)
+  const veNationData = await veNationResponse.text()
+  console.info('veNationData:\n', veNationData)
+  const venation_voting_power_per_week: number[] = []
+  Papa.parse(veNationData, {
+    header: true,
+    skipEmptyLines: true,
+    dynamicTyping: true,
+    complete: (result: any) => {
+      console.info('result:', result)
+      result.data.forEach((row: any, i: number) => {
+        console.info(`row ${i}`, row)
+        venation_voting_power_per_week[i] = Number(row.voting_power)
+      })
+      console.info('venation_voting_power_per_week:', venation_voting_power_per_week)
+    }
+  })
+
   return {
     props: {
       citizen: citizen,
@@ -271,6 +309,9 @@ export async function getStaticProps(context: any) {
         valueCreationScores: nationcred_value_creation_scores,
         governanceScores: nationcred_governance_scores,
         operationsScores: nationcred_operations_scores
+      },
+      veNation: {
+        voting_power_per_week: venation_voting_power_per_week
       }
     }
   }
