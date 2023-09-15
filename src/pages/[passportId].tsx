@@ -253,10 +253,14 @@ export function VotingPowerChart({ citizen, veNation }: any) {
       {
         name: 'Voting power',
         data: veNation.voting_power_per_week
+      },
+      {
+        name: 'Passport expiry threshold',
+        data: new Array(veNation.voting_power_per_week.length).fill(1.5)
       }
     ],
     options: {
-      colors: ['#88f1bb'],
+      colors: ['#88f1bb', '#e7588f'],
       dataLabels: {
         enabled: false
       },
@@ -264,6 +268,9 @@ export function VotingPowerChart({ citizen, veNation }: any) {
         toolbar: {
           show: false
         }
+      },
+      yaxis: {
+        min: 0
       }
     }
   }
