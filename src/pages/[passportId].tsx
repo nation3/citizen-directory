@@ -13,7 +13,7 @@ import Papa from 'papaparse'
 import dynamic from 'next/dynamic'
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false })
 
-export default function ProfilePage({ citizen, nationCred, veNation, dework }: any) {
+export default function ProfilePage({ citizen, nationCred, veNation, dework, sourceCred }: any) {
   console.log('ProfilePage')
 
   const router = useRouter()
@@ -106,7 +106,7 @@ export default function ProfilePage({ citizen, nationCred, veNation, dework }: a
               {router.isFallback ? (
                 <LoadingIndicator />
               ) : (
-                <SourceCredChart />
+                <SourceCredChart sourceCred={sourceCred} />
               )}
             </div>
           </div>
@@ -178,12 +178,41 @@ export function NationCredChart({ nationCred }: any) {
   )
 }
 
-export function SourceCredChart({ citizen }: any) {
+export function SourceCredChart({ citizen, sourceCred }: any) {
   console.info('NationCredChart')
+  const chartData = {
+    series: [
+      {
+        name: 'SourceCred score',
+        data: sourceCred.sourcecred_scores
+      },
+      {
+        name: 'Discord score',
+        data: sourceCred.discord_scores
+      },
+      {
+        name: 'Discourse score',
+        data: sourceCred.discourse_scores
+      },
+      {
+        name: 'GitHub score',
+        data: sourceCred.github_scores
+      }
+    ],
+    options: {
+      colors: ['#d5a398', '#d6d3d1', '#a8a29e', '#78716c'],
+      dataLabels: {
+        enabled: false
+      },
+      chart: {
+        toolbar: {
+          show: false
+        }
+      }
+    }
+  }
   return (
-    <>
-      SourceCredChart
-    </>
+    <Chart options={chartData.options} series={chartData.series} type="area" height="100%" />
   )
 }
 
@@ -349,6 +378,39 @@ export async function getStaticProps(context: any) {
     }
   })
 
+  // Fetch SourceCred data from datasets repo
+  const sourceCredFileUrl: string = `https://raw.githubusercontent.com/nation3/nationcred-datasets/main/data-sources/sourcecred/output/sourcecred-${citizen.passportId}.csv`
+  console.info('Fetching SourceCred data:', sourceCredFileUrl)
+  const sourceCredResponse = await fetch(sourceCredFileUrl)
+  const sourceCredData = await sourceCredResponse.text()
+  console.info('sourceCredData:\n', deworkData)
+  const sourcecred_week_ends: string[] = []
+  const sourcecred_sourcecred_scores: number[] = []
+  const sourcecred_discord_scores: number[] = []
+  const sourcecred_discourse_scores: number[] = []
+  const sourcecred_github_scores: number[] = []
+  Papa.parse(sourceCredData, {
+    header: true,
+    skipEmptyLines: true,
+    dynamicTyping: true,
+    complete: (result: any) => {
+      console.info('result:', result)
+      result.data.forEach((row: any, i: number) => {
+        console.info(`row ${i}`, row)
+        sourcecred_week_ends[i] = String(row.week_end)
+        sourcecred_sourcecred_scores[i] = Number(row.sourcecred_score)
+        sourcecred_discord_scores[i] = Number(row.discord_score)
+        sourcecred_discourse_scores[i] = Number(row.discourse_score)
+        sourcecred_github_scores[i] = Number(row.github_score)
+      })
+      console.info('sourcecred_week_ends:', sourcecred_week_ends)
+      console.info('sourcecred_sourcecred_scores:', sourcecred_sourcecred_scores)
+      console.info('sourcecred_discord_scores:', sourcecred_discord_scores)
+      console.info('sourcecred_discourse_scores:', sourcecred_discourse_scores)
+      console.info('sourcecred_github_scores:', sourcecred_github_scores)
+    }
+  })
+
   return {
     props: {
       citizen: citizen,
@@ -365,6 +427,13 @@ export async function getStaticProps(context: any) {
         week_ends: dework_week_ends,
         tasks_completed: dework_tasks_completed,
         task_points: dework_task_points
+      },
+      sourceCred: {
+        week_ends: sourcecred_week_ends,
+        sourcecred_scores: sourcecred_sourcecred_scores,
+        discord_scores: sourcecred_discord_scores,
+        discourse_scores: sourcecred_discourse_scores,
+        github_scores: sourcecred_github_scores
       }
     }
   }
