@@ -4,8 +4,8 @@ import Blockies from 'react-blockies'
 import { useRouter } from 'next/router'
 import Menu from '@/components/Menu'
 
-import dework from '../../public/dework.svg'
-import sourcecred from '../../public/sourcecred.svg'
+import DeworkLogo from '../../public/dework.svg'
+import SourceCredLogo from '../../public/sourcecred.svg'
 import Image from 'next/image'
 import LoadingIndicator from '@/components/LoadingIndicator'
 import Papa from 'papaparse'
@@ -13,7 +13,7 @@ import Papa from 'papaparse'
 import dynamic from 'next/dynamic'
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false })
 
-export default function ProfilePage({ citizen, nationCred, veNation }: any) {
+export default function ProfilePage({ citizen, nationCred, veNation, dework }: any) {
   console.log('ProfilePage')
 
   const router = useRouter()
@@ -100,7 +100,7 @@ export default function ProfilePage({ citizen, nationCred, veNation }: any) {
 
           <div className='mt-8'>
             <h2 className="text-2xl flex">
-              <Image alt='SourceCred' src={sourcecred} width={32} height={22} />&nbsp;SourceCred
+              <Image alt='SourceCred' src={SourceCredLogo} width={32} height={22} />&nbsp;SourceCred
             </h2>
             <div className='mt-2 h-64 bg-white dark:bg-slate-800 rounded-lg p-4 drop-shadow-sm'>
               {router.isFallback ? (
@@ -113,13 +113,13 @@ export default function ProfilePage({ citizen, nationCred, veNation }: any) {
 
           <div className='mt-8'>
             <h2 className="text-2xl flex">
-              <Image alt='Dework' src={dework} width={32} height={22} />&nbsp;Dework
+              <Image alt='Dework' src={DeworkLogo} width={30} height={20} />&nbsp;Dework
             </h2>
             <div className='mt-2 h-64 bg-white dark:bg-slate-800 rounded-lg p-4 drop-shadow-sm'>
               {router.isFallback ? (
                 <LoadingIndicator />
               ) : (
-                <DeworkChart />
+                <DeworkChart dework={dework} />
               )}
             </div>
           </div>
@@ -187,12 +187,33 @@ export function SourceCredChart({ citizen }: any) {
   )
 }
 
-export function DeworkChart({ citizen }: any) {
+export function DeworkChart({ citizen, dework }: any) {
   console.info('DeworkChart')
+  const chartData = {
+    series: [
+      {
+        name: 'Tasks completed',
+        data: dework.tasks_completed
+      },
+      {
+        name: 'Task points',
+        data: dework.task_points
+      }
+    ],
+    options: {
+      colors: ['#e7588f', '#8572d9'],
+      dataLabels: {
+        enabled: false
+      },
+      chart: {
+        toolbar: {
+          show: false
+        }
+      }
+    }
+  }
   return (
-    <>
-      DeworkChart
-    </>
+    <Chart options={chartData.options} series={chartData.series} type="area" height="100%" />
   )
 }
 
@@ -301,6 +322,33 @@ export async function getStaticProps(context: any) {
     }
   })
 
+  // Fetch Dework data from datasets repo
+  const deworkFileUrl: string = `https://raw.githubusercontent.com/nation3/nationcred-datasets/main/data-sources/dework/output/dework-${citizen.passportId}.csv`
+  console.info('Fetching Dework data:', deworkFileUrl)
+  const deworkResponse = await fetch(deworkFileUrl)
+  const deworkData = await deworkResponse.text()
+  console.info('deworkData:\n', deworkData)
+  const dework_week_ends: string[] = []
+  const dework_tasks_completed: number[] = []
+  const dework_task_points: number[] = []
+  Papa.parse(deworkData, {
+    header: true,
+    skipEmptyLines: true,
+    dynamicTyping: true,
+    complete: (result: any) => {
+      console.info('result:', result)
+      result.data.forEach((row: any, i: number) => {
+        console.info(`row ${i}`, row)
+        dework_week_ends[i] = String(row.week_end)
+        dework_tasks_completed[i] = Number(row.tasks_completed)
+        dework_task_points[i] = Number(row.task_points)
+      })
+      console.info('dework_week_ends:', dework_week_ends)
+      console.info('dework_tasks_completed:', dework_tasks_completed)
+      console.info('dework_task_points:', dework_task_points)
+    }
+  })
+
   return {
     props: {
       citizen: citizen,
@@ -312,6 +360,11 @@ export async function getStaticProps(context: any) {
       },
       veNation: {
         voting_power_per_week: venation_voting_power_per_week
+      },
+      dework: {
+        week_ends: dework_week_ends,
+        tasks_completed: dework_tasks_completed,
+        task_points: dework_task_points
       }
     }
   }
