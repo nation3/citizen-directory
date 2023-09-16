@@ -11,6 +11,7 @@ import LoadingIndicator from '@/components/LoadingIndicator'
 import Papa from 'papaparse'
 
 import dynamic from 'next/dynamic'
+import VeNationLockDetails from '@/components/VeNationLockDetails'
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false })
 
 export default function ProfilePage({ citizen, nationCred, veNation, dework, sourceCred }: any) {
@@ -126,6 +127,13 @@ export default function ProfilePage({ citizen, nationCred, veNation, dework, sou
 
           <div className='mt-8'>
             <h2 className="text-2xl">🗳️ Voting Power</h2>
+            <div className='mt-2'>
+              {router.isFallback ? (
+                <LoadingIndicator />
+              ) : (
+                <VeNationLockDetails address={citizen.ownerAddress} />
+              )}
+            </div>
             <div className='mt-2 h-64 bg-white dark:bg-slate-800 rounded-lg p-4 drop-shadow-sm'>
               {router.isFallback ? (
                 <LoadingIndicator />
