@@ -19,6 +19,7 @@
     "eslint-config-next": "13.3.0",
     "next": "13.3.0",
     "papaparse": "^5.4.1",
+    "passport": "^0.6.0",
     "passport-github2": "^0.1.12",
     "postcss": "8.4.21",
     "react": "18.2.0",
