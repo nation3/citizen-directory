@@ -27,6 +27,8 @@ export default function ProfilePage({ citizen, nationCred, veNation, dework, sou
       {!router.isFallback && (
         <Head>
           <title>Nation3 Citizen #{citizen.passportId}</title>
+          <meta property="og:title" content={`Nation3 Citizen #${citizen.passportId}`} />
+          <meta property="og:description" content={citizen.ownerAddress} />
           <meta property="og:image" content={`https://cdn.stamp.fyi/avatar/eth:${citizen.ownerAddress}?s=288`} />
         </Head>
       )}
@@ -102,6 +104,24 @@ export default function ProfilePage({ citizen, nationCred, veNation, dework, sou
 
           <div className='mt-8'>
             <h2 className="text-2xl">🎗️ NationCred</h2>
+            <div className='mt-2'>
+              {router.isFallback ? (
+                <LoadingIndicator />
+              ) : (
+                <>
+                  Citizen activity status:
+                  {!nationCred.is_active_per_week[nationCred.is_active_per_week.length - 1] ? (
+                    <span className="ml-1 rounded-full bg-orange-100 px-2 py-1 text-xs font-semibold text-slate-700">
+                      INACTIVE 🥲
+                    </span>
+                  ) : (
+                    <span className="ml-1 rounded-full bg-green-100 px-2 py-1 text-xs font-semibold text-slate-700">
+                      ACTIVE 🥳
+                    </span>
+                  )}
+                </>
+              )}
+            </div>
             <div className='mt-2 h-64 bg-white dark:bg-slate-800 rounded-lg p-4 drop-shadow-sm'>
               {router.isFallback ? (
                 <LoadingIndicator />
@@ -165,6 +185,10 @@ export function NationCredChart({ nationCred }: any) {
   const chartData = {
     series: [
       {
+        name: 'Active citizen threshold',
+        data: new Array(nationCred.scores.length).fill(1)
+      },
+      {
         name: 'NationCred score',
         data: nationCred.scores
       },
@@ -182,7 +206,7 @@ export function NationCredChart({ nationCred }: any) {
       }
     ],
     options: {
-      colors: ['#fbbf24', '#fbbf24', '#fbbf24', '#fbbf24'],
+      colors: ['#fb923c', '#facc15', '#facc15', '#facc15', '#facc15'],
       dataLabels: {
         enabled: false
       },
@@ -271,16 +295,16 @@ export function VotingPowerChart({ citizen, veNation }: any) {
   const chartData = {
     series: [
       {
-        name: 'Voting power',
-        data: veNation.voting_power_per_week
-      },
-      {
         name: 'Passport expiry threshold',
         data: new Array(veNation.voting_power_per_week.length).fill(1.5)
+      },
+      {
+        name: 'Voting power',
+        data: veNation.voting_power_per_week
       }
     ],
     options: {
-      colors: ['#88f1bb', '#e7588f'],
+      colors: ['#fb923c', '#38bdf8'],
       dataLabels: {
         enabled: false
       },
@@ -337,6 +361,7 @@ export async function getStaticProps(context: any) {
   const nationcred_scores: number[] = []
   const nationcred_governance_scores: number[] = []
   const nationcred_operations_scores: number[] = []
+  const nationcred_is_active_per_week: boolean[] = []
   Papa.parse(nationCredData, {
     header: true,
     skipEmptyLines: true,
@@ -349,11 +374,13 @@ export async function getStaticProps(context: any) {
         nationcred_value_creation_scores[i] = Number(row.value_creation_hours)
         nationcred_governance_scores[i] = Number(row.governance_hours)
         nationcred_operations_scores[i] = Number(row.operations_hours)
+        nationcred_is_active_per_week[i] = Boolean(row.is_active)
       })
       console.info('nationcred_scores:', nationcred_scores)
       console.info('nationcred_value_creation_scores:', nationcred_value_creation_scores)
       console.info('nationcred_governance_scores:', nationcred_governance_scores)
       console.info('nationcred_operations_scores:', nationcred_operations_scores)
+      console.info('nationcred_is_active_per_week:', nationcred_is_active_per_week)
     }
   })
 
@@ -445,7 +472,8 @@ export async function getStaticProps(context: any) {
         scores: nationcred_scores,
         valueCreationScores: nationcred_value_creation_scores,
         governanceScores: nationcred_governance_scores,
-        operationsScores: nationcred_operations_scores
+        operationsScores: nationcred_operations_scores,
+        is_active_per_week: nationcred_is_active_per_week
       },
       veNation: {
         voting_power_per_week: venation_voting_power_per_week

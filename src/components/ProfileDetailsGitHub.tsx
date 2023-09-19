@@ -29,8 +29,8 @@ export default function ProfileDetailsGitHub({ address }: any) {
             return (
                 <>
                     <code>Not linked</code>
-                    <Link href={`https://etherscan.io/address/0xb989c0c17a3bce679d7586d9e55b6eab11c18687#writeContract#F1`} target="_blank" className="ml-8 font-bold text-transparent bg-clip-text bg-gradient-to-br from-sky-400 to-green-400">
-                        Link 🔗
+                    <Link href={`https://etherscan.io/address/0xb989c0c17a3bce679d7586d9e55b6eab11c18687#writeContract#F1`} target="_blank" className="border rounded-full px-2 ml-8 font-bold text-transparent bg-clip-text bg-gradient-to-br from-sky-400 to-green-400">
+                        Link my GitHub account 🔗
                     </Link>
                 </>
             )
