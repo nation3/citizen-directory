@@ -71,7 +71,7 @@ export default function ProfilePage({ citizen, nationCred, veNation, dework, sou
                 <ul>
                   <li className='text-ellipsis overflow-hidden'>
                     <span className='text-gray-400 '>Ethereum address</span><br />
-                    <Link target='_blank' className="font-bold text-transparent bg-clip-text bg-gradient-to-br from-blue-400 to-green-400" href={`https://etherscan.io/address/${citizen.ownerAddress}`}>
+                    <Link target='_blank' className="font-bold text-transparent bg-clip-text bg-gradient-to-br from-sky-400 to-green-400" href={`https://etherscan.io/address/${citizen.ownerAddress}`}>
                       <code>{citizen.ownerAddress}</code>
                     </Link>
                   </li>

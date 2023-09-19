@@ -26,10 +26,17 @@ export default function ProfileDetailsGitHub({ address }: any) {
         }
         console.info('gitHubUsername:', gitHubUsername)
         if (!gitHubUsername) {
-            return <code>Not linked</code>
+            return (
+                <>
+                    <code>Not linked</code>
+                    <Link className="ml-4 font-bold text-transparent bg-clip-text bg-gradient-to-br from-sky-400 to-green-400" href={`https://etherscan.io/address/0xb989c0c17a3bce679d7586d9e55b6eab11c18687#writeContract#F1`}>
+                        Update ↗
+                    </Link>
+                </>
+            )
         } else {
             return (
-                <Link target="_blank" className="font-bold text-transparent bg-clip-text bg-gradient-to-br from-blue-400 to-green-400" href={`https://github.com/${gitHubUsername}`}>
+                <Link target="_blank" className="font-bold text-transparent bg-clip-text bg-gradient-to-br from-sky-400 to-green-400" href={`https://github.com/${gitHubUsername}`}>
                     <code>@{gitHubUsername}</code>
                 </Link>
             )
