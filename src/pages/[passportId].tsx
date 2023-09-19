@@ -12,6 +12,8 @@ import Papa from 'papaparse'
 
 import dynamic from 'next/dynamic'
 import VeNationLockDetails from '@/components/VeNationLockDetails'
+import ProfileDetailsGitHub from '@/components/ProfileDetailsGitHub'
+import Link from 'next/link'
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false })
 
 export default function ProfilePage({ citizen, nationCred, veNation, dework, sourceCred }: any) {
@@ -69,11 +71,13 @@ export default function ProfilePage({ citizen, nationCred, veNation, dework, sou
                 <ul>
                   <li className='text-ellipsis overflow-hidden'>
                     <span className='text-gray-400 '>Ethereum address</span><br />
-                    <code>{citizen.ownerAddress}</code>
+                    <Link target='_blank' className="font-bold text-transparent bg-clip-text bg-gradient-to-br from-blue-400 to-green-400" href={`https://etherscan.io/address/${citizen.ownerAddress}`}>
+                      <code>{citizen.ownerAddress}</code>
+                    </Link>
                   </li>
                   <li className='mt-2'>
                     <span className='text-gray-400 '>GitHub account</span><br />
-                    <code>Not linked</code>
+                    <ProfileDetailsGitHub address={citizen.ownerAddress} />
                   </li>
                   <li className='mt-2'>
                     <span className='text-gray-400 '>Discord account</span><br />
