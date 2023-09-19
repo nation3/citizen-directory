@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import logo from '../../public/logo.svg'
 import Link from 'next/link'
-import { Bars3Icon, ChevronRightIcon, CurrencyDollarIcon, LockClosedIcon, Squares2X2Icon, UserPlusIcon, UsersIcon } from '@heroicons/react/24/outline'
+import { BanknotesIcon, Bars3Icon, ChevronRightIcon, CurrencyDollarIcon, LockClosedIcon, Squares2X2Icon, UserPlusIcon, UsersIcon } from '@heroicons/react/24/outline'
 
 export default function Menu() {
   return (
@@ -55,6 +55,13 @@ export function MenuItems () {
         <Link href='https://app.nation3.org/lock' className='flex bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg p-4'>
           <LockClosedIcon className="h-5 w-5" />&nbsp;
           Lock tokens&nbsp;
+          <ChevronRightIcon className='h-5 w-5 opacity-50' />
+        </Link>
+      </li>
+      <li className='mt-4'>
+        <Link href='https://n3bi.nation3.org' className='flex bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg p-4'>
+          <BanknotesIcon className="h-5 w-5" />&nbsp;
+          Claim basic income&nbsp;
           <ChevronRightIcon className='h-5 w-5 opacity-50' />
         </Link>
       </li>
