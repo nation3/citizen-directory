@@ -103,7 +103,9 @@ export default function ProfilePage({ citizen, nationCred, veNation, dework, sou
               </div>
               <div className='w-full md:w-1/4 lg:w-2/4 mt-2 bg-white dark:bg-slate-800 rounded-lg drop-shadow-sm'>
                 {router.isFallback ? (
-                  <LoadingIndicator />
+                  <div className='p-4'>
+                    <LoadingIndicator />
+                  </div>
                 ) : (
                   <Link href={`https://etherscan.io/nft/0x3337dac9F251d4E403D6030E18e3cfB6a2cb1333/${citizen.passportId}`} target='_blank'>
                     <Image alt="NFT Passport" className="w-full" src={`https://storage.googleapis.com/nftimagebucket/tokens/0x3337dac9f251d4e403d6030e18e3cfb6a2cb1333/${citizen.passportId}.svg`} width={200} height={200} />
