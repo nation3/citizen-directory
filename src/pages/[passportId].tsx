@@ -14,6 +14,7 @@ import dynamic from 'next/dynamic'
 import VeNationLockDetails from '@/components/VeNationLockDetails'
 import ProfileDetailsGitHub from '@/components/ProfileDetailsGitHub'
 import Link from 'next/link'
+import Head from 'next/head'
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false })
 
 export default function ProfilePage({ citizen, nationCred, veNation, dework, sourceCred }: any) {
@@ -23,6 +24,13 @@ export default function ProfilePage({ citizen, nationCred, veNation, dework, sou
 
   return (
     <>
+      {!router.isFallback && (
+        <Head>
+          <title>Nation3 Citizen #{citizen.passportId}</title>
+          <meta property="og:image" content={`https://cdn.stamp.fyi/avatar/eth:${citizen.ownerAddress}?s=288`} />
+        </Head>
+      )}
+       
       <main className='flex-column lg:flex'>
         <Menu />
         
