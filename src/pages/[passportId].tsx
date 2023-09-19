@@ -74,31 +74,42 @@ export default function ProfilePage({ citizen, nationCred, veNation, dework, sou
           
           <div className='mt-8'>
             <h2 className="text-2xl">Profile Details</h2>
-            <div className='mt-2 bg-white dark:bg-slate-800 rounded-lg p-4 drop-shadow-sm'>
-              {router.isFallback ? (
-                <LoadingIndicator />
-              ) : (
-                <ul>
-                  <li className='text-ellipsis overflow-hidden'>
-                    <span className='text-gray-400 '>Ethereum address</span><br />
-                    <Link target='_blank' className="font-bold text-transparent bg-clip-text bg-gradient-to-br from-sky-400 to-green-400" href={`https://etherscan.io/address/${citizen.ownerAddress}`}>
-                      <code>{citizen.ownerAddress}</code>
-                    </Link>
-                  </li>
-                  <li className='mt-2'>
-                    <span className='text-gray-400 '>GitHub account</span><br />
-                    <ProfileDetailsGitHub address={citizen.ownerAddress} />
-                  </li>
-                  <li className='mt-2'>
-                    <span className='text-gray-400 '>Discord account</span><br />
-                    <code>Not linked</code>
-                  </li>
-                  <li className='mt-2'>
-                    <span className='text-gray-400 '>Discourse account</span><br />
-                    <code>Not linked</code>
-                  </li>
-                </ul>
-              )}
+            <div className='flex-columns sm:flex sm:space-x-2 lg:space-x-4'>
+              <div className='w-full md:w-3/4 lg:w-2/4 mt-2 bg-white dark:bg-slate-800 rounded-lg p-4 drop-shadow-sm'>
+                {router.isFallback ? (
+                  <LoadingIndicator />
+                ) : (
+                  <ul>
+                    <li className='text-ellipsis overflow-hidden'>
+                      <span className='text-gray-400 '>Ethereum address</span><br />
+                      <Link target='_blank' className="font-bold text-transparent bg-clip-text bg-gradient-to-br from-sky-400 to-green-400" href={`https://etherscan.io/address/${citizen.ownerAddress}`}>
+                        <code>{citizen.ownerAddress}</code>
+                      </Link>
+                    </li>
+                    <li className='mt-2'>
+                      <span className='text-gray-400 '>GitHub account</span><br />
+                      <ProfileDetailsGitHub address={citizen.ownerAddress} />
+                    </li>
+                    <li className='mt-2'>
+                      <span className='text-gray-400 '>Discord account</span><br />
+                      <code>Not linked</code>
+                    </li>
+                    <li className='mt-2'>
+                      <span className='text-gray-400 '>Discourse account</span><br />
+                      <code>Not linked</code>
+                    </li>
+                  </ul>
+                )}
+              </div>
+              <div className='w-full md:w-1/4 lg:w-2/4 mt-2 bg-white dark:bg-slate-800 rounded-lg drop-shadow-sm'>
+                {router.isFallback ? (
+                  <LoadingIndicator />
+                ) : (
+                  <Link href={`https://etherscan.io/nft/0x3337dac9F251d4E403D6030E18e3cfB6a2cb1333/${citizen.passportId}`} target='_blank'>
+                    <Image alt="NFT Passport" className="w-full" src={`https://storage.googleapis.com/nftimagebucket/tokens/0x3337dac9f251d4e403d6030e18e3cfb6a2cb1333/${citizen.passportId}.svg`} width={200} height={200} />
+                  </Link>
+                )}
+              </div>
             </div>
           </div>
 
@@ -115,7 +126,7 @@ export default function ProfilePage({ citizen, nationCred, veNation, dework, sou
                       INACTIVE 🥲
                     </span>
                   ) : (
-                    <span className="ml-1 rounded-full bg-green-100 px-2 py-1 text-xs font-semibold text-slate-700">
+                    <span className="ml-1 rounded-full bg-sky-100 px-2 py-1 text-xs font-semibold text-slate-700">
                       ACTIVE 🥳
                     </span>
                   )}
