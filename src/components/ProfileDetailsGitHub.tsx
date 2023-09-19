@@ -4,14 +4,14 @@ import GitHub from "../../abis/GitHub.json"
 import { useIsMounted } from "../../hooks/useIsMounted"
 import Link from "next/link"
 
-export default function ProfileDetailsGitHub({ address }: any) {
+export default function ProfileDetailsGitHub({ citizen }: any) {
     console.info('ProfileDetailsGitHub')
 
     const { data, isError, isLoading } = useContractRead({
         address: '0xb989c0c17a3bce679d7586d9e55b6eab11c18687',
         abi: GitHub.abi,
         functionName: 'usernames',
-        args: [ address ]
+        args: [ citizen.ownerAddress ]
     })
     console.info('data:', data)
     console.info('isError:', isError)
@@ -29,7 +29,8 @@ export default function ProfileDetailsGitHub({ address }: any) {
             return (
                 <>
                     <code>Not linked</code>
-                    <Link href={`https://etherscan.io/address/0xb989c0c17a3bce679d7586d9e55b6eab11c18687#writeContract#F1`} target="_blank" className="border rounded-full px-2 ml-8 font-bold text-transparent bg-clip-text bg-gradient-to-br from-sky-400 to-green-400">
+                    {/* <Link href={`https://etherscan.io/address/0xb989c0c17a3bce679d7586d9e55b6eab11c18687#writeContract#F1`} target="_blank" className="border rounded-full px-2 ml-8 font-bold text-transparent bg-clip-text bg-gradient-to-br from-sky-400 to-green-400"> */}
+                    <Link href={`/${citizen.passportId}/auth/github`} className="border rounded-full px-2 ml-8 font-bold text-transparent bg-clip-text bg-gradient-to-br from-sky-400 to-green-400">
                         Link my GitHub account 🔗
                     </Link>
                 </>

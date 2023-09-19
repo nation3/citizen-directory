@@ -88,7 +88,7 @@ export default function ProfilePage({ citizen, nationCred, veNation, dework, sou
                     </li>
                     <li className='mt-2'>
                       <span className='text-gray-400 '>GitHub account</span><br />
-                      <ProfileDetailsGitHub address={citizen.ownerAddress} />
+                      <ProfileDetailsGitHub citizen={citizen} />
                     </li>
                     <li className='mt-2'>
                       <span className='text-gray-400 '>Discord account</span><br />
