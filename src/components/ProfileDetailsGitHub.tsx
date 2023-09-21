@@ -1,7 +1,7 @@
 import { useContractRead } from "wagmi"
 import LoadingIndicator from "./LoadingIndicator"
 import GitHub from "../../abis/GitHub.json"
-import { useIsMounted } from "../../hooks/useIsMounted"
+import { useIsMounted } from "@/hooks/useIsMounted"
 import Link from "next/link"
 
 export default function ProfileDetailsGitHub({ citizen }: any) {

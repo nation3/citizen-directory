@@ -12,6 +12,7 @@ import Papa from 'papaparse'
 import Menu from '@/components/Menu'
 import Link from 'next/link'
 import LoadingIndicator from '@/components/LoadingIndicator'
+import { config } from '@/utils/Config'
 
 export default function Home({ total_citizens_count, total_expired_passports, active_citizens_count, citizens }: any) {
   console.log('Home')
@@ -128,12 +129,12 @@ export async function getStaticProps() {
     skipEmptyLines: true,
     dynamicTyping: true,
     complete: (result: any) => {
-      console.info('result:', result)
+      // console.info('result:', result)
       result.data.forEach((row: any, i: number) => {
-        console.info(`row ${i}`, row)
+        // console.info(`row ${i}`, row)
         active_citizens_count[i] = Number(row.active_citizens_count)
       })
-      console.info('active_citizen_count:', active_citizens_count)
+      // console.info('active_citizen_count:', active_citizens_count)
     }
   })
 
@@ -150,23 +151,23 @@ export async function getStaticProps() {
     skipEmptyLines: true,
     dynamicTyping: true,
     complete: (result: any) => {
-      console.info('result:', result)
+      // console.info('result:', result)
       result.data.forEach((row: any, i: number) => {
-        console.info(`row ${i}`, row)
+        // console.info(`row ${i}`, row)
         total_citizens_count[i] = Number(row.total_citizens)
         total_expired_passports[i] = Number(row.total_expired_passports)
       })
-      console.info('total_citizens_count:', total_citizens_count)
-      console.info('total_expired_passports:', total_expired_passports)
+      // console.info('total_citizens_count:', total_citizens_count)
+      // console.info('total_expired_passports:', total_expired_passports)
     }
   })
 
   // Fetch citizen data from datasets repo
   let citizens = null
   const citizenDataFileUrl: string = 'https://raw.githubusercontent.com/nation3/nationcred-datasets/main/data-sources/citizens/output/citizens.json'
-  console.info('Fetching citizen data:', citizenDataFileUrl)
+  // console.info('Fetching citizen data:', citizenDataFileUrl)
   const response = await fetch(citizenDataFileUrl)
-  console.log('response.status:', response.status)
+  // console.log('response.status:', response.status)
   citizens = await response.json()
 
   return {

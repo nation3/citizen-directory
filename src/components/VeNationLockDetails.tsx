@@ -1,7 +1,7 @@
 import { useContractRead } from "wagmi"
 import LoadingIndicator from "./LoadingIndicator"
 import VotingEscrow from "../../abis/VotingEscrow.json"
-import { useIsMounted } from "../../hooks/useIsMounted"
+import { useIsMounted } from "@/hooks/useIsMounted"
 import { formatEther } from 'viem'
 
 export default function VeNationLockDetails({ address }: any) {

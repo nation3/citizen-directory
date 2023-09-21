@@ -1,4 +1,4 @@
-import nc, { createEdgeRouter } from "next-connect"
+// import nc, { createEdgeRouter } from "next-connect"
 import { NextFetchEvent, NextRequest } from "next/server"
 const passport = require('passport')
 const GitHubStrategy = require('passport-github2').Strategy
@@ -9,12 +9,12 @@ console.info('callbackBaseUrl:', callbackBaseUrl)
 const callbackUrl = `${callbackBaseUrl}/api/233/auth/github-callback` // TODO: get [passportId]
 console.info('callbackUrl:', callbackUrl)
 
-const router = createEdgeRouter<NextRequest, NextFetchEvent>()
-router.use(async (request, event, next) => {
-    // logging request example
-    console.log(`${request.method} ${request.url}`);
-    return next();
-});
+// const router = createEdgeRouter<NextRequest, NextFetchEvent>()
+// router.use(async (request, event, next) => {
+//     // logging request example
+//     console.log(`${request.method} ${request.url}`);
+//     return next();
+// });
 
 // Configure strategy
 passport.use(new GitHubStrategy(
