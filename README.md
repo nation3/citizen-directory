@@ -4,7 +4,7 @@ A directory of Nation3 Citizens and their profiles
 
 ## Environment Variables
 
-### GitHub
+### GitHub OAuth App
 
 How to create a new OAuth App:
 
@@ -18,7 +18,9 @@ How to create a new OAuth App:
 
    - Authorization callback URL: https://citizens.nation3.org
 
-Add the environment variables to `.env.local`:
+### `.env.local`
+
+Add the GitHub environment variables to `.env.local`:
 
 ```
 cp .env.local.sample .env.local
