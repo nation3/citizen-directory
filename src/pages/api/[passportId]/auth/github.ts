@@ -1,6 +1,11 @@
 import nc from "next-connect"
+import { useRouter } from "next/router"
 const passport = require('passport')
 const GitHubStrategy = require('passport-github2').Strategy
+
+// const router = useRouter()
+// const passportId = router.query.passportId
+// console.info('passportId:', passportId)
 
 // Configure strategy
 const callbackBaseUrl = process.env['GITHUB_CALLBACK_BASE_URL']
@@ -16,9 +21,7 @@ passport.use(new GitHubStrategy(
   function(accessToken: any, refreshToken: any, profile: any, done: any) {
     console.info('accessToken:', accessToken)
     console.info('refreshToken:', refreshToken)
-    console.info('profile:', profile)
     console.info('profile.username:', profile.username)
-    console.info('done:', done)
     return done(null, profile)
   }
 ))
@@ -26,9 +29,7 @@ passport.use(new GitHubStrategy(
 // Redirect to GitHub authentication
 const handler = nc()
   .get(
-    passport.authenticate('github', {
-      scope: ['user:email']
-    })
+    passport.authenticate('github', {})
   )
 
 export default handler
