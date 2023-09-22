@@ -171,7 +171,7 @@ export default function ProfilePage({ citizen, nationCred, veNation, dework, sou
           </div>
 
           <div className='mt-8'>
-            <h2 className="text-2xl">🗳️ Voting Power</h2>
+            <h2 className="text-2xl">🗳️ Voting Escrow</h2>
             <div className='mt-2'>
               {router.isFallback ? (
                 <LoadingIndicator />
@@ -183,7 +183,7 @@ export default function ProfilePage({ citizen, nationCred, veNation, dework, sou
               {router.isFallback ? (
                 <LoadingIndicator />
               ) : (
-                <VotingPowerChart veNation={veNation} />
+                <VotingEscrowChart veNation={veNation} />
               )}
             </div>
           </div>
@@ -303,17 +303,17 @@ export function DeworkChart({ citizen, dework }: any) {
   )
 }
 
-export function VotingPowerChart({ citizen, veNation }: any) {
-  console.info('VotingPowerChart')
+export function VotingEscrowChart({ citizen, veNation }: any) {
+  console.info('VotingEscrowChart')
   const chartData = {
     series: [
       {
         name: 'Passport expiry threshold',
-        data: new Array(veNation.voting_power_per_week.length).fill(1.5)
+        data: new Array(veNation.voting_escrow_per_week.length).fill(1.5)
       },
       {
-        name: 'Voting power',
-        data: veNation.voting_power_per_week
+        name: 'Voting escrow',
+        data: veNation.voting_escrow_per_week
       }
     ],
     options: {
@@ -403,7 +403,7 @@ export async function getStaticProps(context: any) {
   const veNationResponse = await fetch(veNationFileUrl)
   const veNationData = await veNationResponse.text()
   console.info('veNationData:\n', veNationData)
-  const venation_voting_power_per_week: number[] = []
+  const venation_voting_escrow_per_week: number[] = []
   Papa.parse(veNationData, {
     header: true,
     skipEmptyLines: true,
@@ -412,9 +412,9 @@ export async function getStaticProps(context: any) {
       console.info('result:', result)
       result.data.forEach((row: any, i: number) => {
         console.info(`row ${i}`, row)
-        venation_voting_power_per_week[i] = Number(row.voting_power)
+        venation_voting_escrow_per_week[i] = Number(row.voting_power)
       })
-      console.info('venation_voting_power_per_week:', venation_voting_power_per_week)
+      console.info('venation_voting_escrow_per_week:', venation_voting_escrow_per_week)
     }
   })
 
@@ -489,7 +489,7 @@ export async function getStaticProps(context: any) {
         is_active_per_week: nationcred_is_active_per_week
       },
       veNation: {
-        voting_power_per_week: venation_voting_power_per_week
+        voting_escrow_per_week: venation_voting_escrow_per_week
       },
       dework: {
         week_ends: dework_week_ends,
