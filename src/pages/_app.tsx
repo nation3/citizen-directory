@@ -18,6 +18,7 @@ const config = createConfig({
 const poppins = Poppins({ subsets: ['latin'], weight: '400' })
 
 export default function App({ Component, pageProps }: AppProps) {
+  console.info('App')
   return (
     <WagmiConfig config={config}>
       <main className={poppins.className}>
