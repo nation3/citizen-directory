@@ -8,6 +8,7 @@ console.info('failurePath:', failurePath)
 const handler = nc()
   .get(
     passport.authenticate('github', {
+      session: false,
       failureRedirect: failurePath
     }),
     (req, res) => {
