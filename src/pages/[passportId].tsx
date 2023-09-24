@@ -15,6 +15,7 @@ import VeNationLockDetails from '@/components/VeNationLockDetails'
 import ProfileDetailsGitHub from '@/components/ProfileDetailsGitHub'
 import Link from 'next/link'
 import Head from 'next/head'
+import ProfileDetailsPassportStatus from '@/components/ProfileDetailsPassportStatus'
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false })
 
 export default function ProfilePage({ citizen, nationCred, veNation, dework, sourceCred }: any) {
@@ -85,6 +86,10 @@ export default function ProfilePage({ citizen, nationCred, veNation, dework, sou
                       <Link target='_blank' className="font-bold text-transparent bg-clip-text bg-gradient-to-br from-sky-400 to-green-400" href={`https://etherscan.io/address/${citizen.ownerAddress}`}>
                         <code>{citizen.ownerAddress}</code>
                       </Link>
+                    </li>
+                    <li className='mt-2'>
+                      <span className='text-gray-400 '>Passport status</span><br />
+                      <ProfileDetailsPassportStatus citizen={citizen} />
                     </li>
                     <li className='mt-2'>
                       <span className='text-gray-400 '>GitHub account</span><br />
