@@ -5,8 +5,8 @@ import { useIsMounted } from "@/hooks/useIsMounted"
 import Link from "next/link"
 import { formatEther } from "viem"
 
-export default function ProfileDetailsPassportStatus({ citizen }: any) {
-    console.info('ProfileDetailsPassportStatus')
+export default function PassportStatus({ citizen }: any) {
+    console.info('PassportStatus')
 
     const { data, isError, isLoading } = useContractRead({
         address: '0xf7def1d2fbda6b74bee7452fdf7894da9201065d',

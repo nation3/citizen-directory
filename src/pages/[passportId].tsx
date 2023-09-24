@@ -15,7 +15,7 @@ import VeNationLockDetails from '@/components/VeNationLockDetails'
 import ProfileDetailsGitHub from '@/components/ProfileDetailsGitHub'
 import Link from 'next/link'
 import Head from 'next/head'
-import ProfileDetailsPassportStatus from '@/components/ProfileDetailsPassportStatus'
+import PassportStatus from '@/components/PassportStatus'
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false })
 
 export default function ProfilePage({ citizen, nationCred, veNation, dework, sourceCred }: any) {
@@ -88,10 +88,6 @@ export default function ProfilePage({ citizen, nationCred, veNation, dework, sou
                       </Link>
                     </li>
                     <li className='mt-2'>
-                      <span className='text-gray-400 '>Passport status</span><br />
-                      <ProfileDetailsPassportStatus citizen={citizen} />
-                    </li>
-                    <li className='mt-2'>
                       <span className='text-gray-400 '>GitHub account</span><br />
                       <ProfileDetailsGitHub citizen={citizen} />
                     </li>
@@ -126,7 +122,10 @@ export default function ProfilePage({ citizen, nationCred, veNation, dework, sou
               {router.isFallback ? (
                 <LoadingIndicator />
               ) : (
-                <VeNationLockDetails address={citizen.ownerAddress} />
+                <>
+                  <VeNationLockDetails address={citizen.ownerAddress} /><br />
+                  Passport status: <PassportStatus citizen={citizen} />
+                </>
               )}
             </div>
             <div className='mt-2 h-64 bg-white dark:bg-slate-800 rounded-lg p-4 drop-shadow-sm'>
