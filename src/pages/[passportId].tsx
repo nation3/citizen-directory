@@ -121,6 +121,24 @@ export default function ProfilePage({ citizen, nationCred, veNation, dework, sou
           </div>
 
           <div className='mt-8'>
+            <h2 className="text-2xl">🗳️ Voting Escrow</h2>
+            <div className='mt-2'>
+              {router.isFallback ? (
+                <LoadingIndicator />
+              ) : (
+                <VeNationLockDetails address={citizen.ownerAddress} />
+              )}
+            </div>
+            <div className='mt-2 h-64 bg-white dark:bg-slate-800 rounded-lg p-4 drop-shadow-sm'>
+              {router.isFallback ? (
+                <LoadingIndicator />
+              ) : (
+                <VotingEscrowChart veNation={veNation} />
+              )}
+            </div>
+          </div>
+
+          <div className='mt-8'>
             <h2 className="text-2xl">🎗️ NationCred</h2>
             <div className='mt-2'>
               {router.isFallback ? (
@@ -171,24 +189,6 @@ export default function ProfilePage({ citizen, nationCred, veNation, dework, sou
                 <LoadingIndicator />
               ) : (
                 <DeworkChart dework={dework} />
-              )}
-            </div>
-          </div>
-
-          <div className='mt-8'>
-            <h2 className="text-2xl">🗳️ Voting Escrow</h2>
-            <div className='mt-2'>
-              {router.isFallback ? (
-                <LoadingIndicator />
-              ) : (
-                <VeNationLockDetails address={citizen.ownerAddress} />
-              )}
-            </div>
-            <div className='mt-2 h-64 bg-white dark:bg-slate-800 rounded-lg p-4 drop-shadow-sm'>
-              {router.isFallback ? (
-                <LoadingIndicator />
-              ) : (
-                <VotingEscrowChart veNation={veNation} />
               )}
             </div>
           </div>
