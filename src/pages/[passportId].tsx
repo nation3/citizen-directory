@@ -124,7 +124,7 @@ export default function ProfilePage({ citizen, nationCred, veNation, dework, sou
               ) : (
                 <>
                   <VeNationLockDetails address={citizen.ownerAddress} /><br />
-                  Passport status: <PassportStatus citizen={citizen} />
+                  <PassportStatus citizen={citizen} />
                 </>
               )}
             </div>

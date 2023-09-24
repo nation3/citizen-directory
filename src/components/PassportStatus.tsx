@@ -31,6 +31,7 @@ export default function PassportStatus({ citizen }: any) {
         if (veNationBalanceNumber < 1.5) {
             return (
                 <>
+                    Passport status:
                     <span className="rounded-full bg-orange-100 px-2 py-1 text-xs font-semibold text-slate-700">
                       EXPIRED ⌛
                     </span>
@@ -38,9 +39,12 @@ export default function PassportStatus({ citizen }: any) {
             )
         } else {
             return (
-                <span className="rounded-full bg-sky-100 px-2 py-1 text-xs font-semibold text-slate-700">
-                  ACTIVE 🥳
-                </span>
+                <>
+                    Passport status:
+                    <span className="rounded-full bg-sky-100 px-2 py-1 text-xs font-semibold text-slate-700">
+                        ACTIVE 🥳
+                    </span>
+                </>
             )
         }
     }
