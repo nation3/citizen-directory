@@ -33,4 +33,7 @@ npm install
 npm run lint
 npm run build
 npm run dev
+
+Go to http://localhost:3000
+
 ```
