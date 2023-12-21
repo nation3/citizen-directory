@@ -59,7 +59,7 @@ export function MenuItems () {
         </Link>
       </li>
       <li className='mt-4'>
-        <Link href='https://n3bi.nation3.org' className='flex bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg p-4'>
+        <Link href='https://income.nation3.org' className='flex bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg p-4'>
           <BanknotesIcon className="h-5 w-5" />&nbsp;
           Claim basic income&nbsp;
           <ChevronRightIcon className='h-5 w-5 opacity-50' />
