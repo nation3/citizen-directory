@@ -67,7 +67,7 @@ export default function Home({ total_citizens_count, total_expired_passports, ac
                     <div className='mt-2'>
                       🎗️ NationCred: ???
                       <br />
-                      🗳️ Voting power: {citizens[passportId].votingPower}
+                      🗳️ Voting escrow: {citizens[passportId].votingPower}
                     </div>
                   </div>
                 </div>
