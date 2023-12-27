@@ -11,11 +11,16 @@ const handler = nc()
       session: false,
       failureRedirect: failurePath
     }),
-    (req, res) => {
-      // Successful authentication, redirect to /[passportId]/auth/github-success
-      // TODO
-      console.info('req:', req)
-      console.info('res:', res)
+    (req: any, res: any) => {
+      // Successful authentication
+      console.info('Successful authentication')
+      
+      // Get GitHub username
+      const username: string = req.user.username
+      console.info('username', username)
+
+      // Redirect to /[passportId]/auth/github-success
+      res.redirect(`/233/auth/github-success?username=${username}`)
     }
   )
 
