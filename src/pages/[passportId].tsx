@@ -189,7 +189,7 @@ export default function ProfilePage({ citizen, nationCred, veNation, dework, sou
               {!router.isFallback && (
                 <>
                   <p>
-                    Tasks completed/reviewed: {Number(dework.tasks_completed.length).toLocaleString('en-US')}
+                    Tasks completed/reviewed: {Number(dework.tasks_completed_accumulated).toLocaleString('en-US')}
                   </p>
                   <p>
                     Accumulated task points: {Number(dework.task_points_accumulated).toLocaleString('en-US')}
@@ -447,6 +447,7 @@ export async function getStaticProps(context: any) {
   console.info('deworkData:\n', deworkData)
   const dework_week_ends: string[] = []
   const dework_tasks_completed: number[] = []
+  let dework_tasks_completed_accumulated: number = 0
   const dework_task_points: number[] = []
   let dework_task_points_accumulated: number = 0
   Papa.parse(deworkData, {
@@ -459,11 +460,13 @@ export async function getStaticProps(context: any) {
         console.info(`row ${i}`, row)
         dework_week_ends[i] = String(row.week_end)
         dework_tasks_completed[i] = Number(row.tasks_completed)
+        dework_tasks_completed_accumulated += dework_tasks_completed[i]
         dework_task_points[i] = Number(row.task_points)
         dework_task_points_accumulated += dework_task_points[i]
       })
       console.info('dework_week_ends:', dework_week_ends)
       console.info('dework_tasks_completed:', dework_tasks_completed)
+      console.info('dework_tasks_completed_accumulated:', dework_tasks_completed_accumulated)
       console.info('dework_task_points:', dework_task_points)
       console.info('dework_task_points_accumulated:', dework_task_points_accumulated)
     }
@@ -519,6 +522,7 @@ export async function getStaticProps(context: any) {
       dework: {
         week_ends: dework_week_ends,
         tasks_completed: dework_tasks_completed,
+        tasks_completed_accumulated: dework_tasks_completed_accumulated,
         task_points: dework_task_points,
         task_points_accumulated: dework_task_points_accumulated
       },
