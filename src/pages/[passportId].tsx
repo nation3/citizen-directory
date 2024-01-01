@@ -128,9 +128,6 @@ export default function ProfilePage({ citizen, nationCred, veNation, dework, sou
                       {Number(nationCred.accumulated).toLocaleString('en-US')}
                     </span>
                   </p>
-                  <p>
-                    Last week's score: {nationCred.scores[nationCred.scores.length - 1]}
-                  </p>
                   Citizen activity status:
                   {!nationCred.is_active_per_week[nationCred.is_active_per_week.length - 1] ? (
                     <span className="ml-1 rounded-full bg-orange-100 px-2 py-1 text-xs font-semibold text-slate-700">
@@ -170,6 +167,18 @@ export default function ProfilePage({ citizen, nationCred, veNation, dework, sou
             <h2 className="text-2xl flex">
               <Image alt='Dework' src={DeworkLogo} width={30} height={20} />&nbsp;Dework
             </h2>
+            <div className='mt-2'>
+              {!router.isFallback && (
+                <>
+                  <p>
+                    Tasks completed/reviewed: {Number(dework.tasks_completed.length).toLocaleString('en-US')}
+                  </p>
+                  <p>
+                    Accumulated task points: {Number(dework.task_points_accumulated).toLocaleString('en-US')}
+                  </p>
+                </>
+              )}
+            </div>
             <div className='mt-2 h-64 bg-white dark:bg-slate-800 rounded-lg p-4 drop-shadow-sm'>
               {router.isFallback ? (
                 <LoadingIndicator />
@@ -287,7 +296,7 @@ export function DeworkChart({ citizen, dework }: any) {
   const chartData = {
     series: [
       {
-        name: 'Tasks completed',
+        name: 'Tasks completed/reviewed',
         data: dework.tasks_completed
       },
       {
@@ -439,6 +448,7 @@ export async function getStaticProps(context: any) {
   const dework_week_ends: string[] = []
   const dework_tasks_completed: number[] = []
   const dework_task_points: number[] = []
+  let dework_task_points_accumulated: number = 0
   Papa.parse(deworkData, {
     header: true,
     skipEmptyLines: true,
@@ -450,10 +460,12 @@ export async function getStaticProps(context: any) {
         dework_week_ends[i] = String(row.week_end)
         dework_tasks_completed[i] = Number(row.tasks_completed)
         dework_task_points[i] = Number(row.task_points)
+        dework_task_points_accumulated += dework_task_points[i]
       })
       console.info('dework_week_ends:', dework_week_ends)
       console.info('dework_tasks_completed:', dework_tasks_completed)
       console.info('dework_task_points:', dework_task_points)
+      console.info('dework_task_points_accumulated:', dework_task_points_accumulated)
     }
   })
 
@@ -507,7 +519,8 @@ export async function getStaticProps(context: any) {
       dework: {
         week_ends: dework_week_ends,
         tasks_completed: dework_tasks_completed,
-        task_points: dework_task_points
+        task_points: dework_task_points,
+        task_points_accumulated: dework_task_points_accumulated
       },
       sourceCred: {
         week_ends: sourcecred_week_ends,
