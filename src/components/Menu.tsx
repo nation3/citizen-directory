@@ -59,16 +59,16 @@ export function MenuItems () {
         </Link>
       </li>
       <li className='mt-4'>
-        <Link href='https://income.nation3.org' className='flex bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg p-4'>
-          <BanknotesIcon className="h-5 w-5" />&nbsp;
-          Claim basic income&nbsp;
+        <Link href='https://app.nation3.org/liquidity' className='flex bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg p-4'>
+          <CurrencyDollarIcon className="h-5 w-5" />&nbsp;
+          Liquidity rewards&nbsp;
           <ChevronRightIcon className='h-5 w-5 opacity-50' />
         </Link>
       </li>
       <li className='mt-4'>
-        <Link href='https://app.nation3.org/liquidity' className='flex bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg p-4'>
-          <CurrencyDollarIcon className="h-5 w-5" />&nbsp;
-          Liquidity rewards&nbsp;
+        <Link href='https://income.nation3.org' className='flex bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg p-4'>
+          <BanknotesIcon className="h-5 w-5" />&nbsp;
+          Claim basic income&nbsp;
           <ChevronRightIcon className='h-5 w-5 opacity-50' />
         </Link>
       </li>

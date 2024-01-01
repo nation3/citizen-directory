@@ -122,6 +122,12 @@ export default function ProfilePage({ citizen, nationCred, veNation, dework, sou
                 <LoadingIndicator />
               ) : (
                 <>
+                  <p>
+                    Accumulated: 
+                    <span className="ml-1 rounded-full bg-slate-200 px-2 py-1 font-semibold text-slate-700">
+                      {Number(nationCred.accumulated).toLocaleString('en-US')}
+                    </span>
+                  </p>
                   Citizen activity status:
                   {!nationCred.is_active_per_week[nationCred.is_active_per_week.length - 1] ? (
                     <span className="ml-1 rounded-full bg-orange-100 px-2 py-1 text-xs font-semibold text-slate-700">
@@ -145,6 +151,24 @@ export default function ProfilePage({ citizen, nationCred, veNation, dework, sou
           </div>
 
           <div className='mt-8'>
+            <h2 className="text-2xl">🗳️ Voting Escrow</h2>
+            <div className='mt-2'>
+              {router.isFallback ? (
+                <LoadingIndicator />
+              ) : (
+                <VeNationLockDetails address={citizen.ownerAddress} />
+              )}
+            </div>
+            <div className='mt-2 h-64 bg-white dark:bg-slate-800 rounded-lg p-4 drop-shadow-sm'>
+              {router.isFallback ? (
+                <LoadingIndicator />
+              ) : (
+                <VotingEscrowChart veNation={veNation} />
+              )}
+            </div>
+          </div>
+
+          <div className='mt-8'>
             <h2 className="text-2xl flex">
               <Image alt='SourceCred' src={SourceCredLogo} width={32} height={22} />&nbsp;SourceCred
             </h2>
@@ -161,29 +185,23 @@ export default function ProfilePage({ citizen, nationCred, veNation, dework, sou
             <h2 className="text-2xl flex">
               <Image alt='Dework' src={DeworkLogo} width={30} height={20} />&nbsp;Dework
             </h2>
+            <div className='mt-2'>
+              {!router.isFallback && (
+                <>
+                  <p>
+                    Tasks completed/reviewed: {Number(dework.tasks_completed_accumulated).toLocaleString('en-US')}
+                  </p>
+                  <p>
+                    Accumulated task points: {Number(dework.task_points_accumulated).toLocaleString('en-US')}
+                  </p>
+                </>
+              )}
+            </div>
             <div className='mt-2 h-64 bg-white dark:bg-slate-800 rounded-lg p-4 drop-shadow-sm'>
               {router.isFallback ? (
                 <LoadingIndicator />
               ) : (
                 <DeworkChart dework={dework} />
-              )}
-            </div>
-          </div>
-
-          <div className='mt-8'>
-            <h2 className="text-2xl">🗳️ Voting Escrow</h2>
-            <div className='mt-2'>
-              {router.isFallback ? (
-                <LoadingIndicator />
-              ) : (
-                <VeNationLockDetails address={citizen.ownerAddress} />
-              )}
-            </div>
-            <div className='mt-2 h-64 bg-white dark:bg-slate-800 rounded-lg p-4 drop-shadow-sm'>
-              {router.isFallback ? (
-                <LoadingIndicator />
-              ) : (
-                <VotingEscrowChart veNation={veNation} />
               )}
             </div>
           </div>
@@ -219,7 +237,7 @@ export function NationCredChart({ nationCred }: any) {
       }
     ],
     options: {
-      colors: ['#fb923c', '#facc15', '#facc15', '#facc15', '#facc15'],
+      colors: ['#fb923c', '#facc15', '#fde047', '#fef08a', '#fef9c3'],
       dataLabels: {
         enabled: false
       },
@@ -278,7 +296,7 @@ export function DeworkChart({ citizen, dework }: any) {
   const chartData = {
     series: [
       {
-        name: 'Tasks completed',
+        name: 'Tasks completed/reviewed',
         data: dework.tasks_completed
       },
       {
@@ -372,6 +390,7 @@ export async function getStaticProps(context: any) {
   const nationCredData = await nationCredResponse.text()
   const nationcred_value_creation_scores: number[] = []
   const nationcred_scores: number[] = []
+  let nationcred_accumulated: number = 0
   const nationcred_governance_scores: number[] = []
   const nationcred_operations_scores: number[] = []
   const nationcred_is_active_per_week: boolean[] = []
@@ -384,12 +403,14 @@ export async function getStaticProps(context: any) {
       result.data.forEach((row: any, i: number) => {
         console.info(`row ${i}`, row)
         nationcred_scores[i] = Number(row.nationcred_score)
+        nationcred_accumulated += nationcred_scores[i]
         nationcred_value_creation_scores[i] = Number(row.value_creation_hours)
         nationcred_governance_scores[i] = Number(row.governance_hours)
         nationcred_operations_scores[i] = Number(row.operations_hours)
         nationcred_is_active_per_week[i] = Boolean(row.is_active)
       })
       console.info('nationcred_scores:', nationcred_scores)
+      console.info('nationcred_accumulated:', nationcred_accumulated)
       console.info('nationcred_value_creation_scores:', nationcred_value_creation_scores)
       console.info('nationcred_governance_scores:', nationcred_governance_scores)
       console.info('nationcred_operations_scores:', nationcred_operations_scores)
@@ -426,7 +447,9 @@ export async function getStaticProps(context: any) {
   console.info('deworkData:\n', deworkData)
   const dework_week_ends: string[] = []
   const dework_tasks_completed: number[] = []
+  let dework_tasks_completed_accumulated: number = 0
   const dework_task_points: number[] = []
+  let dework_task_points_accumulated: number = 0
   Papa.parse(deworkData, {
     header: true,
     skipEmptyLines: true,
@@ -437,11 +460,15 @@ export async function getStaticProps(context: any) {
         console.info(`row ${i}`, row)
         dework_week_ends[i] = String(row.week_end)
         dework_tasks_completed[i] = Number(row.tasks_completed)
+        dework_tasks_completed_accumulated += dework_tasks_completed[i]
         dework_task_points[i] = Number(row.task_points)
+        dework_task_points_accumulated += dework_task_points[i]
       })
       console.info('dework_week_ends:', dework_week_ends)
       console.info('dework_tasks_completed:', dework_tasks_completed)
+      console.info('dework_tasks_completed_accumulated:', dework_tasks_completed_accumulated)
       console.info('dework_task_points:', dework_task_points)
+      console.info('dework_task_points_accumulated:', dework_task_points_accumulated)
     }
   })
 
@@ -483,6 +510,7 @@ export async function getStaticProps(context: any) {
       citizen: citizen,
       nationCred: {
         scores: nationcred_scores,
+        accumulated: nationcred_accumulated,
         valueCreationScores: nationcred_value_creation_scores,
         governanceScores: nationcred_governance_scores,
         operationsScores: nationcred_operations_scores,
@@ -494,7 +522,9 @@ export async function getStaticProps(context: any) {
       dework: {
         week_ends: dework_week_ends,
         tasks_completed: dework_tasks_completed,
-        task_points: dework_task_points
+        tasks_completed_accumulated: dework_tasks_completed_accumulated,
+        task_points: dework_task_points,
+        task_points_accumulated: dework_task_points_accumulated
       },
       sourceCred: {
         week_ends: sourcecred_week_ends,
