@@ -237,7 +237,7 @@ export function NationCredChart({ nationCred }: any) {
       }
     ],
     options: {
-      colors: ['#fb923c', '#facc15', '#facc15', '#facc15', '#facc15'],
+      colors: ['#fb923c', '#facc15', '#fde047', '#fef08a', '#fef9c3'],
       dataLabels: {
         enabled: false
       },
