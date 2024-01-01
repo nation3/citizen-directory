@@ -123,7 +123,7 @@ export default function ProfilePage({ citizen, nationCred, veNation, dework, sou
               ) : (
                 <>
                   <p>
-                    Accumulated over time: 
+                    Accumulated: 
                     <span className="ml-1 rounded-full bg-slate-200 px-2 py-1 font-semibold text-slate-700">
                       {Number(nationCred.accumulated).toLocaleString('en-US')}
                     </span>
@@ -146,6 +146,24 @@ export default function ProfilePage({ citizen, nationCred, veNation, dework, sou
                 <LoadingIndicator />
               ) : (
                 <NationCredChart nationCred={nationCred} />
+              )}
+            </div>
+          </div>
+
+          <div className='mt-8'>
+            <h2 className="text-2xl">🗳️ Voting Escrow</h2>
+            <div className='mt-2'>
+              {router.isFallback ? (
+                <LoadingIndicator />
+              ) : (
+                <VeNationLockDetails address={citizen.ownerAddress} />
+              )}
+            </div>
+            <div className='mt-2 h-64 bg-white dark:bg-slate-800 rounded-lg p-4 drop-shadow-sm'>
+              {router.isFallback ? (
+                <LoadingIndicator />
+              ) : (
+                <VotingEscrowChart veNation={veNation} />
               )}
             </div>
           </div>
@@ -184,24 +202,6 @@ export default function ProfilePage({ citizen, nationCred, veNation, dework, sou
                 <LoadingIndicator />
               ) : (
                 <DeworkChart dework={dework} />
-              )}
-            </div>
-          </div>
-
-          <div className='mt-8'>
-            <h2 className="text-2xl">🗳️ Voting Escrow</h2>
-            <div className='mt-2'>
-              {router.isFallback ? (
-                <LoadingIndicator />
-              ) : (
-                <VeNationLockDetails address={citizen.ownerAddress} />
-              )}
-            </div>
-            <div className='mt-2 h-64 bg-white dark:bg-slate-800 rounded-lg p-4 drop-shadow-sm'>
-              {router.isFallback ? (
-                <LoadingIndicator />
-              ) : (
-                <VotingEscrowChart veNation={veNation} />
               )}
             </div>
           </div>
