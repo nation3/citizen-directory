@@ -5,6 +5,7 @@ import { useRouter } from 'next/router'
 import Menu from '@/components/Menu'
 
 import DeworkLogo from '../../public/dework.svg'
+import CoordinapeLogo from '../../public/coordinape.svg'
 import SourceCredLogo from '../../public/sourcecred.svg'
 import Image from 'next/image'
 import LoadingIndicator from '@/components/LoadingIndicator'
@@ -17,7 +18,7 @@ import Link from 'next/link'
 import Head from 'next/head'
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false })
 
-export default function ProfilePage({ citizen, nationCred, veNation, dework, sourceCred }: any) {
+export default function ProfilePage({ citizen, nationCred, veNation, dework, coordinape, sourceCred }: any) {
   console.log('ProfilePage')
 
   const router = useRouter()
@@ -205,6 +206,37 @@ export default function ProfilePage({ citizen, nationCred, veNation, dework, sou
               )}
             </div>
           </div>
+
+          <div className='mt-8'>
+            <h2 className="text-2xl flex">
+              <Image alt='Coordinape' src={CoordinapeLogo} width={30} height={20} />&nbsp;Coordinape
+            </h2>
+            <div className='mt-2'>
+              {!router.isFallback && (
+                <>
+                  <p>
+                    🧙 Development Guild contributions: {coordinape.dev_contributions_accumulated} ({Number(coordinape.dev_hours_accumulated).toLocaleString('en-US')}h)
+                  </p>
+                  <p>
+                    🎥 Marketing Guild contributions: {coordinape.marketing_contributions_accumulated} ({Number(coordinape.marketing_hours_accumulated).toLocaleString('en-US')}h)
+                  </p>
+                  <p>
+                    ⚙️ Ops Guild contributions: {coordinape.ops_contributions_accumulated} ({Number(coordinape.ops_hours_accumulated).toLocaleString('en-US')}h)
+                  </p>
+                  <p>
+                    🌳 EcoRide Network contributions: {coordinape.ecoride_contributions_accumulated} ({Number(coordinape.ecoride_hours_accumulated).toLocaleString('en-US')}h)
+                  </p>
+                </>
+              )}
+            </div>
+            <div className='mt-2 h-64 bg-white dark:bg-slate-800 rounded-lg p-4 drop-shadow-sm'>
+              {router.isFallback ? (
+                <LoadingIndicator />
+              ) : (
+                <CoordinapeChart coordinape={coordinape} />
+              )}
+            </div>
+          </div>
         </div>
       </main>
     </>
@@ -310,6 +342,50 @@ export function DeworkChart({ citizen, dework }: any) {
         enabled: false
       },
       chart: {
+        toolbar: {
+          show: false
+        }
+      }
+    }
+  }
+  return (
+    <Chart options={chartData.options} series={chartData.series} type="area" height="100%" />
+  )
+}
+
+export function CoordinapeChart({ citizen, coordinape }: any) {
+  console.info('CoordinapeChart')
+  const chartData = {
+    series: [
+      {
+        name: '🧙 Development hours',
+        data: coordinape.dev_hours
+      },
+      {
+        name: '🎥 Marketing hours',
+        data: coordinape.marketing_hours
+      },
+      {
+        name: '⚙️ Ops hours',
+        data: coordinape.ops_hours
+      },
+      {
+        name: '🌳 EcoRide Network',
+        data: coordinape.ecoride_hours
+      }
+    ],
+    options: {
+      colors: [
+          '#38bdf8',
+          '#a78bfa',
+          '#9ca3af',
+          '#15803d'
+      ],
+      dataLabels: {
+        enabled: false
+      },
+      chart: {
+        stacked: true,
         toolbar: {
           show: false
         }
@@ -472,6 +548,87 @@ export async function getStaticProps(context: any) {
     }
   })
 
+  // Fetch Coordinape data from datasets repo
+  const coordinapeFileUrl: string = `https://raw.githubusercontent.com/nation3/nationcred-datasets/main/data-sources/coordinape/output/coordinape-${citizen.passportId}.csv`
+  console.info('Fetching Dework data:', coordinapeFileUrl)
+  const coordinapeResponse = await fetch(coordinapeFileUrl)
+  const coordinapeData = await coordinapeResponse.text()
+  console.info('coordinapeData:\n', coordinapeData)
+  const coordinape_week_ends: string[] = []
+  //
+  const coordinape_dev_contributions: number[] = []
+  let coordinape_dev_contributions_accumulated: number = 0
+  const coordinape_dev_hours: number[] = []
+  let coordinape_dev_hours_accumulated: number = 0
+  //
+  const coordinape_marketing_contributions: number[] = []
+  let coordinape_marketing_contributions_accumulated: number = 0
+  const coordinape_marketing_hours: number[] = []
+  let coordinape_marketing_hours_accumulated: number = 0
+  //
+  const coordinape_ops_contributions: number[] = []
+  let coordinape_ops_contributions_accumulated: number = 0
+  const coordinape_ops_hours: number[] = []
+  let coordinape_ops_hours_accumulated: number = 0
+  //
+  const coordinape_ecoride_contributions: number[] = []
+  let coordinape_ecoride_contributions_accumulated: number = 0
+  const coordinape_ecoride_hours: number[] = []
+  let coordinape_ecoride_hours_accumulated: number = 0
+  Papa.parse(coordinapeData, {
+    header: true,
+    skipEmptyLines: true,
+    dynamicTyping: true,
+    complete: (result: any) => {
+      console.info('result:', result)
+      result.data.forEach((row: any, i: number) => {
+        console.info(`row ${i}`, row)
+        coordinape_week_ends[i] = String(row.week_end)
+        //
+        coordinape_dev_contributions[i] = Number(row.dev_contributions)
+        coordinape_dev_contributions_accumulated += coordinape_dev_contributions[i]
+        coordinape_dev_hours[i] = Number(row.dev_hours)
+        coordinape_dev_hours_accumulated += coordinape_dev_hours[i]
+        //
+        coordinape_marketing_contributions[i] = Number(row.marketing_contributions)
+        coordinape_marketing_contributions_accumulated += coordinape_marketing_contributions[i]
+        coordinape_marketing_hours[i] = Number(row.marketing_hours)
+        coordinape_marketing_hours_accumulated += coordinape_marketing_hours[i]
+        //
+        coordinape_ops_contributions[i] = Number(row.ops_contributions)
+        coordinape_ops_contributions_accumulated += coordinape_ops_contributions[i]
+        coordinape_ops_hours[i] = Number(row.ops_hours)
+        coordinape_ops_hours_accumulated += coordinape_ops_hours[i]
+        //
+        coordinape_ecoride_contributions[i] = Number(row.ecoride_contributions)
+        coordinape_ecoride_contributions_accumulated += coordinape_ecoride_contributions[i]
+        coordinape_ecoride_hours[i] = Number(row.ecoride_hours)
+        coordinape_ecoride_hours_accumulated += coordinape_ecoride_hours[i]
+      })
+      console.info('coordinape_week_ends:', coordinape_week_ends)
+      //
+      console.info('coordinape_dev_contributions:', coordinape_dev_contributions)
+      console.info('coordinape_dev_contributions_accumulated:', coordinape_dev_contributions_accumulated)
+      console.info('coordinape_dev_hours:', coordinape_dev_hours)
+      console.info('coordinape_dev_hours_accumulated:', coordinape_dev_hours_accumulated)
+      //
+      console.info('coordinape_marketing_contributions:', coordinape_marketing_contributions)
+      console.info('coordinape_marketing_contributions_accumulated:', coordinape_marketing_contributions_accumulated)
+      console.info('coordinape_marketing_hours:', coordinape_marketing_hours)
+      console.info('coordinape_marketing_hours_accumulated:', coordinape_marketing_hours_accumulated)
+      //
+      console.info('coordinape_ops_contributions:', coordinape_ops_contributions)
+      console.info('coordinape_ops_contributions_accumulated:', coordinape_ops_contributions_accumulated)
+      console.info('coordinape_ops_hours:', coordinape_ops_hours)
+      console.info('coordinape_ops_hours_accumulated:', coordinape_ops_hours_accumulated)
+      //
+      console.info('coordinape_ecoride_contributions:', coordinape_ecoride_contributions)
+      console.info('coordinape_ecoride_contributions_accumulated:', coordinape_ecoride_contributions_accumulated)
+      console.info('coordinape_ecoride_hours:', coordinape_ecoride_hours)
+      console.info('coordinape_ecoride_hours_accumulated:', coordinape_ecoride_hours_accumulated) 
+    }
+  })
+
   // Fetch SourceCred data from datasets repo
   const sourceCredFileUrl: string = `https://raw.githubusercontent.com/nation3/nationcred-datasets/main/data-sources/sourcecred/output/sourcecred-${citizen.passportId}.csv`
   console.info('Fetching SourceCred data:', sourceCredFileUrl)
@@ -525,6 +682,29 @@ export async function getStaticProps(context: any) {
         tasks_completed_accumulated: dework_tasks_completed_accumulated,
         task_points: dework_task_points,
         task_points_accumulated: dework_task_points_accumulated
+      },
+      coordinape: {
+        week_ends: dework_week_ends,
+        //
+        dev_contributions: coordinape_dev_contributions,
+        dev_contributions_accumulated: coordinape_dev_contributions_accumulated,
+        dev_hours: coordinape_dev_hours,
+        dev_hours_accumulated: coordinape_dev_hours_accumulated,
+        //
+        marketing_contributions: coordinape_marketing_contributions,
+        marketing_contributions_accumulated: coordinape_marketing_contributions_accumulated,
+        marketing_hours: coordinape_marketing_hours,
+        marketing_hours_accumulated: coordinape_marketing_hours_accumulated,
+        //
+        ops_contributions: coordinape_ops_contributions,
+        ops_contributions_accumulated: coordinape_ops_contributions_accumulated,
+        ops_hours: coordinape_ops_hours,
+        ops_hours_accumulated: coordinape_ops_hours_accumulated,
+        //
+        ecoride_contributions: coordinape_ecoride_contributions,
+        ecoride_contributions_accumulated: coordinape_ecoride_contributions_accumulated,
+        ecoride_hours: coordinape_ecoride_hours,
+        ecoride_hours_accumulated: coordinape_ecoride_hours_accumulated,
       },
       sourceCred: {
         week_ends: sourcecred_week_ends,
