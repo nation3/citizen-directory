@@ -245,6 +245,20 @@ export default function ProfilePage({ citizen, nationCred, veNation, dework, coo
 
 export function NationCredChart({ nationCred }: any) {
   console.info('NationCredChart')
+
+  let xAxisAnnotations: any = []
+  nationCred.is_active_per_week.forEach((isActive: boolean, index: number) => {
+    console.info(`isActive ${index}`, isActive)
+    if (isActive) {
+      // https://apexcharts.com/docs/annotations/
+      xAxisAnnotations.push({
+        x: index,
+        x2: index + 1,
+        fillColor: '#B3F7CA'
+      })
+    }
+  })
+
   const chartData = {
     series: [
       {
@@ -277,6 +291,9 @@ export function NationCredChart({ nationCred }: any) {
         toolbar: {
           show: false
         }
+      },
+      annotations: {
+        xaxis: xAxisAnnotations
       }
     }
   }
@@ -286,7 +303,7 @@ export function NationCredChart({ nationCred }: any) {
 }
 
 export function SourceCredChart({ citizen, sourceCred }: any) {
-  console.info('NationCredChart')
+  console.info('SourceCredChart')
   const chartData = {
     series: [
       {
