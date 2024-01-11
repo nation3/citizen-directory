@@ -6,6 +6,7 @@ import Menu from '@/components/Menu'
 
 import DeworkLogo from '../../public/dework.svg'
 import CoordinapeLogo from '../../public/coordinape.svg'
+import SnapshotLogo from '../../public/snapshot.png'
 import SourceCredLogo from '../../public/sourcecred.svg'
 import Image from 'next/image'
 import LoadingIndicator from '@/components/LoadingIndicator'
@@ -18,7 +19,7 @@ import Link from 'next/link'
 import Head from 'next/head'
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false })
 
-export default function ProfilePage({ citizen, nationCred, veNation, dework, coordinape, sourceCred }: any) {
+export default function ProfilePage({ citizen, nationCred, veNation, dework, coordinape, snapshot, sourceCred }: any) {
   console.log('ProfilePage')
 
   const router = useRouter()
@@ -171,6 +172,31 @@ export default function ProfilePage({ citizen, nationCred, veNation, dework, coo
 
           <div className='mt-8'>
             <h2 className="text-2xl flex">
+              <Image alt='Snapshot' src={SnapshotLogo} width={30} height={20} className='rounded-full' />&nbsp;Snapshot
+            </h2>
+            <div className='mt-2'>
+              {!router.isFallback && (
+                <>
+                  <p>
+                    🗳️ Votes: {snapshot.votes_count_accumulated}
+                  </p>
+                  <p>
+                    ✍️ Proposals: {snapshot.proposals_count_accumulated}
+                  </p>
+                </>
+              )}
+            </div>
+            <div className='mt-2 h-64 bg-white dark:bg-slate-800 rounded-lg p-4 drop-shadow-sm'>
+              {router.isFallback ? (
+                <LoadingIndicator />
+              ) : (
+                <SnapshotChart snapshot={snapshot} />
+              )}
+            </div>
+          </div>
+
+          <div className='mt-8'>
+            <h2 className="text-2xl flex">
               <Image alt='SourceCred' src={SourceCredLogo} width={32} height={22} />&nbsp;SourceCred
             </h2>
             <div className='mt-2 h-64 bg-white dark:bg-slate-800 rounded-lg p-4 drop-shadow-sm'>
@@ -266,24 +292,30 @@ export function NationCredChart({ nationCred }: any) {
         data: new Array(nationCred.scores.length).fill(1)
       },
       {
-        name: 'NationCred score',
-        data: nationCred.scores
-      },
-      {
-        name: 'Value creation score',
-        data: nationCred.valueCreationScores
-      },
-      {
         name: 'Governance score',
         data: nationCred.governanceScores
       },
       {
         name: 'Operations score',
         data: nationCred.operationsScores
+      },
+      {
+        name: 'Value creation score',
+        data: nationCred.valueCreationScores
+      },
+      {
+        name: 'NationCred score',
+        data: nationCred.scores
       }
     ],
     options: {
-      colors: ['#fb923c', '#facc15', '#fde047', '#fef08a', '#fef9c3'],
+      colors: [
+        '#fb923c',
+        '#94a3b8',
+        '#ca8a04',
+        '#f59e0b',
+        '#facc15'
+      ],
       dataLabels: {
         enabled: false
       },
@@ -294,6 +326,39 @@ export function NationCredChart({ nationCred }: any) {
       },
       annotations: {
         xaxis: xAxisAnnotations
+      }
+    }
+  }
+  return (
+    <Chart options={chartData.options} series={chartData.series} type="area" height="100%" />
+  )
+}
+
+export function SnapshotChart({ citizen, snapshot }: any) {
+  console.info('SnapshotChart')
+  const chartData = {
+    series: [
+      {
+        name: 'Votes count',
+        data: snapshot.votes_count
+      },
+      {
+        name: 'Proposals count',
+        data: snapshot.proposals_count
+      }
+    ],
+    options: {
+      colors: [
+        '#94a3b8',
+        '#fbbf24'
+      ],
+      dataLabels: {
+        enabled: false
+      },
+      chart: {
+        toolbar: {
+          show: false
+        }
       }
     }
   }
@@ -646,6 +711,39 @@ export async function getStaticProps(context: any) {
     }
   })
 
+  // Fetch Snapshot data from datasets repo
+  const snapshotFileUrl: string = `https://raw.githubusercontent.com/nation3/nationcred-datasets/main/data-sources/snapshot/output/snapshot-${citizen.passportId}.csv`
+  console.info('Fetching Snapshot data:', snapshotFileUrl)
+  const snapshotResponse = await fetch(snapshotFileUrl)
+  const snapshotData = await snapshotResponse.text()
+  console.info('snapshotData:\n', deworkData)
+  const snapshot_week_ends: string[] = []
+  const snapshot_votes_count: number[] = []
+  let snapshot_votes_count_accumulated: number = 0
+  const snapshot_proposals_count: number[] = []
+  let snapshot_proposals_count_accumulated: number = 0
+  Papa.parse(snapshotData, {
+    header: true,
+    skipEmptyLines: true,
+    dynamicTyping: true,
+    complete: (result: any) => {
+      console.info('result:', result)
+      result.data.forEach((row: any, i: number) => {
+        console.info(`row ${i}`, row)
+        snapshot_week_ends[i] = String(row.week_end)
+        snapshot_votes_count[i] = Number(row.votes_count)
+        snapshot_votes_count_accumulated += snapshot_votes_count[i]
+        snapshot_proposals_count[i] = Number(row.proposals_count)
+        snapshot_proposals_count_accumulated += snapshot_proposals_count[i]
+      })
+      console.info('snapshot_week_ends:', snapshot_week_ends)
+      console.info('snapshot_votes_count:', snapshot_votes_count)
+      console.info('snapshot_votes_count_accumulated:', snapshot_votes_count_accumulated)
+      console.info('snapshot_proposals_count:', snapshot_proposals_count)
+      console.info('snapshot_proposals_count_accumulated:', snapshot_proposals_count_accumulated)
+    }
+  })
+
   // Fetch SourceCred data from datasets repo
   const sourceCredFileUrl: string = `https://raw.githubusercontent.com/nation3/nationcred-datasets/main/data-sources/sourcecred/output/sourcecred-${citizen.passportId}.csv`
   console.info('Fetching SourceCred data:', sourceCredFileUrl)
@@ -722,6 +820,13 @@ export async function getStaticProps(context: any) {
         ecoride_contributions_accumulated: coordinape_ecoride_contributions_accumulated,
         ecoride_hours: coordinape_ecoride_hours,
         ecoride_hours_accumulated: coordinape_ecoride_hours_accumulated,
+      },
+      snapshot: {
+        week_ends: snapshot_week_ends,
+        votes_count: snapshot_votes_count,
+        votes_count_accumulated: snapshot_votes_count_accumulated,
+        proposals_count: snapshot_proposals_count,
+        proposals_count_accumulated: snapshot_proposals_count_accumulated
       },
       sourceCred: {
         week_ends: sourcecred_week_ends,
