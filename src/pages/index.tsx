@@ -14,7 +14,7 @@ import Link from 'next/link'
 import LoadingIndicator from '@/components/LoadingIndicator'
 import { config } from '@/utils/Config'
 
-export default function Home({ total_citizens_count, total_expired_passports, active_citizens_count, citizens }: any) {
+export default function Home({ total_citizens_count, total_expired_passports, active_citizens_count, citizens, nationcred_scores_accumulated }: any) {
   console.log('Home')
   return (
     <main className='flex-column lg:flex'>
@@ -65,7 +65,7 @@ export default function Home({ total_citizens_count, total_expired_passports, ac
                       </h2>
                     </div>
                     <div className='mt-2'>
-                      🎗️ NationCred: ???
+                      🎗️ NationCred: {nationcred_scores_accumulated[passportId]}
                       <br />
                       🗳️ Voting escrow: {citizens[passportId].votingPower}
                     </div>
@@ -169,13 +169,32 @@ export async function getStaticProps() {
   const response = await fetch(citizenDataFileUrl)
   // console.log('response.status:', response.status)
   citizens = await response.json()
+  
+  // Fetch NationCred scores data from datasets repo
+  const nationCredScoresFileUrl: string = 'https://raw.githubusercontent.com/nation3/nationcred-datasets/main/nationcred/output/nationcred-scores.csv'
+  console.log('Fetching NationCred scores data:', nationCredScoresFileUrl)
+  const nationCredScoresResponse = await fetch(nationCredScoresFileUrl)
+  console.log('nationCredScoresResponse.status:', nationCredScoresResponse.status)
+  const nationCredScoresData = await nationCredScoresResponse.text()
+  const nationcred_scores_accumulated: number[] = []
+  Papa.parse(nationCredScoresData, {
+    header: true,
+    skipEmptyLines: true,
+    dynamicTyping: true,
+    complete: (result: any) => {
+      result.data.forEach((row: any, i: number) => {
+        nationcred_scores_accumulated[i] = Number(row.nationcred_score_accumulated)
+      })
+    }
+  })
 
   return {
     props: {
       total_citizens_count,
       total_expired_passports,
       active_citizens_count,
-      citizens
+      citizens,
+      nationcred_scores_accumulated
     },
     revalidate: 10  // In seconds
   }
