@@ -65,7 +65,10 @@ export default function Home({ total_citizens_count, total_expired_passports, ac
                       </h2>
                     </div>
                     <div className='mt-2'>
-                      🎗️ NationCred: {nationcred_scores_accumulated[passportId]}
+                      🎗️ NationCred: 
+                      <span className="ml-1 rounded-full bg-slate-200 px-2 py-1 font-semibold text-slate-700">
+                        {Number(nationcred_scores_accumulated[passportId]).toLocaleString('en-US')}
+                      </span>
                       <br />
                       🗳️ Voting escrow: {citizens[passportId].votingPower}
                     </div>
