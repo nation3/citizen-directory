@@ -835,6 +835,7 @@ export async function getStaticProps(context: any) {
         discourse_scores: sourcecred_discourse_scores,
         github_scores: sourcecred_github_scores
       }
-    }
+    },
+    revalidate: 60  // In seconds
   }
 }
