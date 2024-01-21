@@ -199,6 +199,6 @@ export async function getStaticProps() {
       citizens,
       nationcred_scores_accumulated
     },
-    revalidate: 10  // In seconds
+    revalidate: 60  // In seconds
   }
 }
