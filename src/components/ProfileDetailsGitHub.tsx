@@ -4,7 +4,7 @@ import GitHub from "../../abis/GitHub.json"
 import { useIsMounted } from "@/hooks/useIsMounted"
 import Link from "next/link"
 
-export default function NFTImage({ citizen }: any) {
+export default function ProfileDetailsGitHub({ citizen }: any) {
   console.info('ProfileDetailsGitHub')
 
   const { data, isError, isLoading } = useContractRead({

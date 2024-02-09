@@ -7,7 +7,7 @@ import ERC721 from "../../abis/ERC721.json"
 
 import Image from 'next/image'
 
-export default function ProfileDetailsGitHub({ citizen }: any) {
+export default function NFTImage({ citizen }: any) {
   console.info('NFTImage')
 
   const { data, isError, isLoading }: any = useContractRead({
