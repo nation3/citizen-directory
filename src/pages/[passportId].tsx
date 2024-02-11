@@ -15,14 +15,17 @@ import Papa from 'papaparse'
 import dynamic from 'next/dynamic'
 import VeNationLockDetails from '@/components/VeNationLockDetails'
 import ProfileDetailsGitHub from '@/components/ProfileDetailsGitHub'
+import NFTImage from '@/components/NFTImage'
 import Link from 'next/link'
 import Head from 'next/head'
+
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false })
 
 export default function ProfilePage({ citizen, nationCred, veNation, dework, coordinape, snapshot, sourceCred }: any) {
   console.log('ProfilePage')
 
   const router = useRouter()
+
 
   return (
     <>
@@ -34,10 +37,10 @@ export default function ProfilePage({ citizen, nationCred, veNation, dework, coo
           <meta property="og:image" content={`https://cdn.stamp.fyi/avatar/eth:${citizen.ownerAddress}?s=288`} />
         </Head>
       )}
-       
+
       <main className='flex-column lg:flex'>
         <Menu />
-        
+
         <div className='w-full lg:w-3/4 p-8'>
           <div className="flex">
             {router.isFallback ? (
@@ -56,15 +59,15 @@ export default function ProfilePage({ citizen, nationCred, veNation, dework, coo
                     size={24}
                   />
                 )}
-    
+
                 <div className="ml-4 font-bold">
                   <h1 className="text-4xl mt-2">
                     {citizen.ensName
                       ? citizen.ensName
                       : `${citizen.ownerAddress.substring(
-                          0,
-                          6
-                        )}...${citizen.ownerAddress.slice(-4)}`}
+                        0,
+                        6
+                      )}...${citizen.ownerAddress.slice(-4)}`}
                   </h1>
                   <h2 className="text-2xl text-gray-400 mt-2">
                     Citizen #{citizen.passportId}
@@ -73,7 +76,7 @@ export default function ProfilePage({ citizen, nationCred, veNation, dework, coo
               </>
             )}
           </div>
-          
+
           <div className='mt-8'>
             <h2 className="text-2xl">Profile Details</h2>
             <div className='flex-columns sm:flex sm:space-x-2 lg:space-x-4'>
@@ -110,7 +113,9 @@ export default function ProfilePage({ citizen, nationCred, veNation, dework, coo
                   </div>
                 ) : (
                   <Link href={`https://etherscan.io/nft/0x3337dac9F251d4E403D6030E18e3cfB6a2cb1333/${citizen.passportId}`} target='_blank'>
-                    <Image alt="NFT Passport" className="w-full" src={`https://storage.googleapis.com/nftimagebucket/tokens/0x3337dac9f251d4e403d6030e18e3cfb6a2cb1333/${citizen.passportId}.svg`} width={200} height={200} />
+                    {/* <Image alt="NFT Passport" className="w-full" src={`https://storage.googleapis.com/nftimagebucket/tokens/0x3337dac9f251d4e403d6030e18e3cfb6a2cb1333/${citizen.passportId}.svg`} width={200} height={200} /> */}
+                    <NFTImage citizen={citizen} />
+
                   </Link>
                 )}
               </div>
@@ -125,7 +130,7 @@ export default function ProfilePage({ citizen, nationCred, veNation, dework, coo
               ) : (
                 <>
                   <p>
-                    Accumulated: 
+                    Accumulated:
                     <span className="ml-1 rounded-full bg-slate-200 px-2 py-1 font-semibold text-slate-700">
                       {Number(nationCred.accumulated).toLocaleString('en-US')}
                     </span>
@@ -458,10 +463,10 @@ export function CoordinapeChart({ citizen, coordinape }: any) {
     ],
     options: {
       colors: [
-          '#38bdf8',
-          '#a78bfa',
-          '#9ca3af',
-          '#15803d'
+        '#38bdf8',
+        '#a78bfa',
+        '#9ca3af',
+        '#15803d'
       ],
       dataLabels: {
         enabled: false
@@ -707,7 +712,7 @@ export async function getStaticProps(context: any) {
       console.info('coordinape_ecoride_contributions:', coordinape_ecoride_contributions)
       console.info('coordinape_ecoride_contributions_accumulated:', coordinape_ecoride_contributions_accumulated)
       console.info('coordinape_ecoride_hours:', coordinape_ecoride_hours)
-      console.info('coordinape_ecoride_hours_accumulated:', coordinape_ecoride_hours_accumulated) 
+      console.info('coordinape_ecoride_hours_accumulated:', coordinape_ecoride_hours_accumulated)
     }
   })
 
