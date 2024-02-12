@@ -14,7 +14,7 @@ import Link from 'next/link'
 import LoadingIndicator from '@/components/LoadingIndicator'
 import { config } from '@/utils/Config'
 
-export default function Home({ total_citizens_count, total_expired_passports, active_citizens_count, citizens, nationcred_scores_accumulated }: any) {
+export default function Home({ total_citizens_count, total_expired_passports, total_revoked_passports, active_citizens_count, citizens, nationcred_scores_accumulated }: any) {
   console.log('Home')
   return (
     <main className='flex-column lg:flex'>
@@ -28,7 +28,7 @@ export default function Home({ total_citizens_count, total_expired_passports, ac
 
         <div className='mt-4 w-full h-64 dark:bg-slate-800 dark:rounded-xl'>
           {(total_citizens_count && active_citizens_count) ? (
-            <CitizenChart total_citizens_count={total_citizens_count} total_expired_passports={total_expired_passports} active_citizens_count={active_citizens_count} />
+            <CitizenChart total_citizens_count={total_citizens_count} total_expired_passports={total_expired_passports} total_revoked_passports={total_revoked_passports} active_citizens_count={active_citizens_count} />
           ) : (
             <LoadingIndicator />
           )}
@@ -85,7 +85,7 @@ export default function Home({ total_citizens_count, total_expired_passports, ac
   )
 }
 
-function CitizenChart({ total_citizens_count, total_expired_passports, active_citizens_count }: any) {
+function CitizenChart({ total_citizens_count, total_expired_passports, total_revoked_passports, active_citizens_count }: any) {
   const chartData = {
     series: [
       {
@@ -99,6 +99,10 @@ function CitizenChart({ total_citizens_count, total_expired_passports, active_ci
       {
         name: 'Expired Passports',
         data: total_expired_passports
+      },
+      {
+        name: 'Revoked Passports',
+        data: total_revoked_passports
       }
     ],
     options: {
@@ -149,6 +153,7 @@ export async function getStaticProps() {
   const citizenCountData = await citizenCountResponse.text()
   const total_citizens_count: number[] = []
   const total_expired_passports: number[] = []
+  const total_revoked_passports: number[] = []
   Papa.parse(citizenCountData, {
     header: true,
     skipEmptyLines: true,
@@ -159,9 +164,11 @@ export async function getStaticProps() {
         // console.info(`row ${i}`, row)
         total_citizens_count[i] = Number(row.total_citizens)
         total_expired_passports[i] = Number(row.total_expired_passports)
+        total_revoked_passports[i] = Number(row.total_revoked_passports)
       })
       // console.info('total_citizens_count:', total_citizens_count)
       // console.info('total_expired_passports:', total_expired_passports)
+      // console.info('total_revoked_passports:', total_revoked_passports)
     }
   })
 
@@ -195,6 +202,7 @@ export async function getStaticProps() {
     props: {
       total_citizens_count,
       total_expired_passports,
+      total_revoked_passports,
       active_citizens_count,
       citizens,
       nationcred_scores_accumulated
