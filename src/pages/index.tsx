@@ -70,7 +70,7 @@ export default function Home({ total_citizens_count, total_expired_passports, ac
                         {Number(nationcred_scores_accumulated[passportId]).toLocaleString('en-US')}
                       </span>
                       <br />
-                      🗳️ Voting escrow: {citizens[passportId].votingPower}
+                      🗳️ Voting escrow: {citizens[passportId].votingEscrow}
                     </div>
                   </div>
                 </div>
