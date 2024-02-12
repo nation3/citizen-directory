@@ -596,7 +596,7 @@ export async function getStaticProps(context: any) {
       console.info('result:', result)
       result.data.forEach((row: any, i: number) => {
         console.info(`row ${i}`, row)
-        venation_voting_escrow_per_week[i] = Number(row.voting_power)
+        venation_voting_escrow_per_week[i] = Number(row.voting_escrow)
       })
       console.info('venation_voting_escrow_per_week:', venation_voting_escrow_per_week)
     }
