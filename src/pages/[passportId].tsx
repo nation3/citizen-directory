@@ -19,6 +19,7 @@ import NFTImage from '@/components/NFTImage'
 import Link from 'next/link'
 import Head from 'next/head'
 import ProfileDetailsDevSkillRating from '@/components/ProfileDetailsDevSkillRating'
+import ProfileDetailsOpsSkillRating from '@/components/ProfileDetailsOpsSkillRating'
 import { InformationCircleIcon } from '@heroicons/react/24/outline'
 
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false })
@@ -106,8 +107,12 @@ export default function ProfilePage({ citizen, nationCred, veNation, dework, coo
                       <code>Not linked</code>
                     </li>
                     <li className='mt-2 pt-2'>
-                      <span className='text-gray-400 '>Developer skill level <Link href="https://github.com/nation3/citizen-rewards/tree/main/development-guild#readme" target="_blank"><InformationCircleIcon className="inline h-5 w-5" /></Link></span><br />
+                      <span className='text-gray-400 '>🧙 Developer skill level <Link href="https://github.com/nation3/citizen-rewards/tree/main/development-guild#readme" target="_blank"><InformationCircleIcon className="inline h-5 w-5" /></Link></span><br />
                       <ProfileDetailsDevSkillRating citizen={citizen} />
+                    </li>
+                    <li className='mt-2 pt-2'>
+                      <span className='text-gray-400 '>⚙️ Operator skill level <Link href="https://github.com/nation3/citizen-rewards/tree/main/ops-guild#readme" target="_blank"><InformationCircleIcon className="inline h-5 w-5" /></Link></span><br />
+                      <ProfileDetailsOpsSkillRating citizen={citizen} />
                     </li>
                   </ul>
                 )}
