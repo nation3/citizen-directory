@@ -18,7 +18,11 @@ export default function NFTImage({ citizen }: any) {
   })
 
   if (!useIsMounted() || isLoading) {
-    return <LoadingIndicator />
+    return (
+      <div className='p-4'>
+        <LoadingIndicator />
+      </div>
+    )
   } else {
     let image: any = null
     if (data) {
