@@ -18,6 +18,8 @@ import ProfileDetailsGitHub from '@/components/ProfileDetailsGitHub'
 import NFTImage from '@/components/NFTImage'
 import Link from 'next/link'
 import Head from 'next/head'
+import ProfileDetailsDevSkillRating from '@/components/ProfileDetailsDevSkillRating'
+import { InformationCircleIcon } from '@heroicons/react/24/outline'
 
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false })
 
@@ -84,24 +86,28 @@ export default function ProfilePage({ citizen, nationCred, veNation, dework, coo
                 {router.isFallback ? (
                   <LoadingIndicator />
                 ) : (
-                  <ul>
+                  <ul className='divide-y divide-dashed'>
                     <li className='text-ellipsis overflow-hidden'>
                       <span className='text-gray-400 '>Ethereum address</span><br />
                       <Link target='_blank' className="font-bold text-transparent bg-clip-text bg-gradient-to-br from-sky-400 to-green-400" href={`https://etherscan.io/address/${citizen.ownerAddress}`}>
                         <code>{citizen.ownerAddress}</code>
                       </Link>
                     </li>
-                    <li className='mt-2'>
+                    <li className='mt-2 pt-2'>
                       <span className='text-gray-400 '>GitHub account</span><br />
                       <ProfileDetailsGitHub citizen={citizen} />
                     </li>
-                    <li className='mt-2'>
+                    <li className='mt-2 pt-2'>
                       <span className='text-gray-400 '>Discord account</span><br />
                       <code>Not linked</code>
                     </li>
-                    <li className='mt-2'>
+                    <li className='mt-2 pt-2'>
                       <span className='text-gray-400 '>Discourse account</span><br />
                       <code>Not linked</code>
+                    </li>
+                    <li className='mt-2 pt-2'>
+                      <span className='text-gray-400 '>Developer skill level <Link href="https://github.com/nation3/citizen-rewards/tree/main/development-guild#readme" target="_blank"><InformationCircleIcon className="inline h-5 w-5" /></Link></span><br />
+                      <ProfileDetailsDevSkillRating citizen={citizen} />
                     </li>
                   </ul>
                 )}
