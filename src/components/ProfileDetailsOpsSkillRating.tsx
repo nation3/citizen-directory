@@ -41,7 +41,7 @@ export default function ProfileDetailsOpsSkillRating({ citizen }: any) {
       const skillLevelAverageRounded: number = Math.round(skillLevelAverageEther)
       console.info('skillLevelAverageRounded:', skillLevelAverageRounded)
       const ratingValues = ['★☆☆☆☆ 1/5', '★★☆☆☆ 2/5', '★★★☆☆ 3/5', '★★★★☆ 4/5', '★★★★★ 5/5']
-      const ratingTextColors = ['text-orange-400', 'text-amber-400', 'text-lime-400', 'text-emerald-400', 'text-cyan-400' ]
+      const ratingTextColors = ['text-orange-400', 'text-amber-400', 'text-lime-400', 'text-cyan-400', 'text-emerald-400' ]
       return (
         <>
           <Link href={`https://etherscan.io/address/0x8100e77899C24b0F7B516153F84868f850C034BF#writeContract#F1`} target="_blank" className="float-right border rounded-full px-2 ml-8 font-bold text-transparent bg-clip-text bg-gradient-to-br from-sky-400 to-green-400">
