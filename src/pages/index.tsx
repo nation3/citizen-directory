@@ -28,7 +28,7 @@ export default function Home({ total_citizens_count, total_expired_passports, to
 
         <div className='mt-4 w-full h-64 dark:bg-slate-800 dark:rounded-xl'>
           {(total_citizens_count && active_citizens_count) ? (
-            <CitizenChart total_citizens_count={total_citizens_count} total_expired_passports={total_expired_passports} total_revoked_passports={total_revoked_passports} active_citizens_count={active_citizens_count} />
+            <CitizenChart total_citizens_count={total_citizens_count.slice(-52)} total_expired_passports={total_expired_passports.slice(-52)} total_revoked_passports={total_revoked_passports.slice(-52)} active_citizens_count={active_citizens_count.slice(-52)} />
           ) : (
             <LoadingIndicator />
           )}
