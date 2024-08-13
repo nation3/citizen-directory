@@ -32,3 +32,12 @@ body {
 #menu-large {
   background: rgb(var(--menu-background-rgb));
 }
+
+.apexcharts-text.apexcharts-xaxis-label,
+.apexcharts-text.apexcharts-yaxis-label {
+  fill: rgb(var(--foreground-rgb));
+}
+
+.apexcharts-legend-text {
+  color: rgb(var(--foreground-rgb)) !important;
+}
