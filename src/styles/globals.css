@@ -37,3 +37,7 @@ body {
 .apexcharts-text.apexcharts-yaxis-label {
   fill: rgb(var(--foreground-rgb));
 }
+
+.apexcharts-legend-text {
+  color: rgb(var(--foreground-rgb)) !important;
+}
