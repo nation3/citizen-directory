@@ -6,15 +6,22 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "cy:open": "cypress open",
+    "cy:run": "cypress run",
+    "e2e:open": "start-server-and-test dev http://localhost:3000 cy:open",
+    "e2e:run": "start-server-and-test dev http://localhost:3000 cy:run"
   },
   "dependencies": {
     "@heroicons/react": "^2.0.17",
     "@types/node": "18.15.11",
+    "@types/papaparse": "^5.3.14",
     "@types/react": "18.0.33",
     "@types/react-dom": "18.0.11",
     "apexcharts": "^3.39.0",
     "autoprefixer": "10.4.20",
+    "cypress": "^13.14.1",
+    "dotenv": "^16.3.1",
     "eslint": "8.38.0",
     "eslint-config-next": "14.2.6",
     "next": "13.3.0",
@@ -27,13 +34,10 @@
     "react-apexcharts": "^1.4.1",
     "react-blockies": "^1.4.1",
     "react-dom": "18.2.0",
+    "start-server-and-test": "^2.0.5",
     "tailwindcss": "^3.4.10",
     "typescript": "5.5.4",
     "viem": "^1.10.14",
     "wagmi": "^1.4.2"
-  },
-  "devDependencies": {
-    "@types/papaparse": "^5.3.14",
-    "dotenv": "^16.3.1"
   }
 }
