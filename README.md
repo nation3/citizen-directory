@@ -36,3 +36,15 @@ npm run dev
 ```
 
 Go to http://localhost:3000
+
+## Integration Testing
+
+Run the integration tests:
+```
+npm run cy:open
+```
+
+Run the integration tests headlessly:
+```
+npm run cy:run
+```
